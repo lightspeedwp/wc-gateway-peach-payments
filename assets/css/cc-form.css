@@ -1,0 +1,135 @@
+.cardPayment {
+	max-width: 600px;
+	width: 100%;
+	margin: 2em auto;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	position: relative;
+	padding: 1em 2em 2em;
+	font-size: 0.92em;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	line-height: 1.5em;
+	background: #ebe8eb;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ebe8eb), to(#e0dadf));
+	background: -webkit-linear-gradient(#ebe8eb, #e0dadf);
+	background: -moz-linear-gradient(center top, #ebe8eb 0%, #e0dadf 100%);
+	background: -moz-gradient(center top, #ebe8eb 0%, #e0dadf 100%);
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+	-webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+	color: #5e5e5e;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.cardPayment .customInputField,
+.cardPayment select {
+	width: 100%;
+	border-width: 1px !important;
+	font-size: 16px !important;
+	padding: 10px !important;
+}
+
+.cardPayment .customLabel {
+	margin: 10px 0 5px;
+	clear: both;
+}
+
+.cardPayment select {
+	width: 50%;
+	padding: 5px;
+	background: white;
+	border-color: #EFEFEF;
+	border-width: 2px;
+	border-style: solid;
+	margin-bottom: 10px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-size: 1em;
+	color: #666;
+	font-family: inherit;
+}
+
+.cardPayment .expiryMonthSelect {
+	width: 48.5% !important;
+	float: left;
+}
+
+.cardPayment .expiryYearSelect {
+	width: 49% !important;
+	float: right;
+}
+
+.cardPayment .expiryMonthSelect select,
+.cardPayment .expiryYearSelect select {	
+	width: 100% !important;
+}
+
+.cardPayment .customInputField {
+	max-width: 97.8%;
+}
+
+.cardPayment .errorMessage {
+	color: #df3a24;
+	margin-bottom: 15px;
+}
+
+.cardPayment button {
+	float: right;
+	background: #ad74a2;
+	margin: 15px 0 0 !important;
+	display: inline-block;
+	padding: .327em 1em;
+	color: white!important;
+	text-align: center;
+	border: none;
+	text-decoration: none;
+	font-size: 1em;
+	font-family: inherit;
+	cursor: pointer;
+	overflow: visible;
+	width: auto;
+	line-height: 1.618em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	white-space: nowrap;
+	background: #428bca;
+	font-weight: 200;
+	text-transform: uppercase;
+	box-shadow: 0 0 0 0 #888888;
+	-webkit-box-shadow: 0 0 0 0 #888888;
+	-moz-box-shadow: 0 0 0 0 #888888;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-shadow: none;
+	-webkit-appearance: caret;
+	-moz-appearance: caret;
+}
+
+.cardPayment .brandicon {
+	position: absolute;
+	left: 340px;
+	top: 60px;
+}
+
+.cardPayment .brand-VISA,
+.cardPayment .brand-MASTER {
+	display: block;
+	width: 38px;
+	height: 24px;
+}
+
+.cardPayment .brand-MASTER {
+	background: url(../images/mastercard.png);
+}
+
+.cardPayment .brand-VISA {
+	background: url(../images/visa.png);
+}
+
+.cardPayment .submitInput {
+	display: inline-block;
+	width: 100%;
+}
