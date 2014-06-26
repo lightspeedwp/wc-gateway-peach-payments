@@ -1,4 +1,4 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
 
-2014.04.23 - version 1.0
+2014.06.26 - version 1.0.0
  * First Release
