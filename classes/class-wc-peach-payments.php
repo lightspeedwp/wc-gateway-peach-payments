@@ -343,7 +343,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 					if ( $this->transaction_mode == 'CONNECTOR_TEST' || 'LIVE' ) {
 						$payment_request['CRITERION.presentation.currency3D'] = 'ZAR';
-						$payment_request['CRITERION.presentation.amount3D'] = '1.0';
+						$payment_request['CRITERION.presentation.amount3D'] = $order->order_total;
 					}
 
 					if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {

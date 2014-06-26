@@ -108,7 +108,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 					if ( $this->transaction_mode == 'CONNECTOR_TEST' || 'LIVE' ) {
 						$subscription_request['CRITERION.presentation.currency3D'] = 'ZAR';
-						$subscription_request['CRITERION.presentation.amount3D'] = '1.0';
+						$subscription_request['CRITERION.presentation.amount3D'] = $order->order_total;
 					}
 
 					if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {
