@@ -1,14 +1,13 @@
 <?php
-/*
-	Plugin Name: WooCommerce Peach Payments Gateway
-	Plugin URI: http://peachpayments.com/
-	Description: A payment gateway for Peach Payments.
-	Version: 1.0
-	Author: LightSpeed
-	Author URI: https://lsdev.biz/
-	Requires at least: 3.8
-	Tested up to: 3.9.1
-*/
+/**
+ * Plugin URI: http://woothemes.com/products/peach-payments/
+ * Description: A payment gateway for Peach Payments.
+ * Version: 1.0.0
+ * Author: LightSpeed
+ * Author URI: https://lsdev.biz/
+ * Requires at least: 3.8
+ * Tested up to: 3.9.1
+ */
 
 /**
  * Required functions
@@ -19,7 +18,7 @@ if ( ! function_exists( 'woothemes_queue_update' ) )
 /**
  * Plugin updates
  */
-woothemes_queue_update( plugin_basename( __FILE__ ), '557bf07293ad916f20c207c6c9cd15ff', '18596' );
+woothemes_queue_update( plugin_basename( __FILE__ ), 'e875781563c998b4e0cb0e47cd4b7b9a', '439020' );
 
 add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
 
@@ -30,13 +29,13 @@ add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
  */
 function woocommerce_peach_payments_init() {
 
-	if ( ! class_exists( 'WC_Payment_Gateway' ) ) 
+	if ( ! class_exists( 'WC_Payment_Gateway' ) )
 		return;
 
 	include_once( plugin_basename( 'classes/class-wc-peach-payments.php' ) );
 
 	load_plugin_textdomain( 'woocommerce-gateway-peach-payments', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) );
-	
+
 	if ( class_exists( 'WC_Subscriptions_Order' ) )
 		include_once( 'classes/class-wc-peach-payments-subscriptions.php' );
 
