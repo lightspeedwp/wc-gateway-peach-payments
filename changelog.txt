@@ -1,4 +1,7 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
 
+2014.06.27 - version 1.0.1
+ * Fix - Adds the plugin name to the plugin header data.
+
 2014.06.26 - version 1.0.0
  * First Release
