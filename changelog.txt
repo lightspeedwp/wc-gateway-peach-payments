@@ -1,5 +1,8 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
 
+2015.08.07 - version 1.0.2
+ * Fix - Remove SSL Verify
+
 2014.06.27 - version 1.0.1
  * Fix - Adds the plugin name to the plugin header data.
 
