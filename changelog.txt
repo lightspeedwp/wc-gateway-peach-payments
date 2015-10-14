@@ -1,8 +1,13 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
-
-2015.08.07 - version 1.0.2
- * Fix - Remove SSL Verify
-
+2015.10.14 - version 1.0.8
+ * Add WC_Addons_Gateway_Simplify_Commerce_Deprecated 
+ * Support admin payment method changes
+ * Update renewal payments for Subs v2.0
+ * Remove meta from resubscribe orders
+ * Update order_contains_subscription()
+ * Update change failling payment method
+ * Add support for multiple subscriptions
+ 
 2014.06.27 - version 1.0.1
  * Fix - Adds the plugin name to the plugin header data.
 

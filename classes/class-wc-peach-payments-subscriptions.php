@@ -16,15 +16,50 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 		parent::__construct();
 
-		add_action( 'scheduled_subscription_payment_' . $this->id, array( &$this, 'scheduled_subscription_payment' ), 10, 3 );
-
-		add_filter( 'woocommerce_subscriptions_renewal_order_meta_query', array( &$this, 'remove_renewal_order_meta' ), 10, 4 );
-
+		add_action( 'woocommerce_scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 2 );
 		add_action( 'woocommerce_subscriptions_changed_failing_payment_method_peach-payments', array( &$this, 'update_failing_payment_method' ), 10, 3 );
 
 		add_action( 'woocommerce_api_wc_peach_payments_subscriptions', array( &$this, 'process_payment_status') );
+		add_action( 'wcs_resubscribe_order_created', array( $this, 'delete_resubscribe_meta' ), 10 );
+		// Allow store managers to manually set Simplify as the payment method on a subscription
+		add_filter( 'woocommerce_subscription_payment_meta', array( $this, 'add_subscription_payment_meta' ), 10, 2 );
+		add_filter( 'woocommerce_subscription_validate_payment_meta', array( $this, 'validate_subscription_payment_meta' ), 10, 2 );
+					
 	}
 
+	/**
+	 * Adds option for registering or using existing Peach Payments details
+	 * 
+	 * @access public
+	 * @return void
+	 **/
+	function payment_fields() {
+		?>
+		<fieldset>
+
+			<p class="form-row form-row-wide">
+
+				<?php if ( $credit_cards = get_user_meta( get_current_user_id(), '_peach_payment_id', false ) ) : ?>
+
+					<?php foreach ( $credit_cards as $i => $credit_card ) : ?>
+						<input type="radio" id="peach_card_<?php echo $i; ?>" name="peach_payment_id" style="width:auto;" value="<?php echo $i; ?>" />
+						<label style="display:inline;" for="peach_card_<?php echo $i; ?>"><?php echo get_card_brand_image( $credit_card['brand'] ); ?> <?php echo '**** **** **** ' . $credit_card['active_card']; ?> (<?php echo $credit_card['exp_month'] . '/' . $credit_card['exp_year'] ?>)</label><br />
+					<?php endforeach; ?>
+
+					<br /> <a class="button" style="float:right;" href="<?php echo get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ); ?>#saved-cards"><?php _e( 'Manage cards', 'woocommerce-gateway-peach-payments' ); ?></a>
+
+				<?php endif; ?>
+
+				<input type="radio" id="saveinfo" name="peach_payment_id" style="width:auto;" value="saveinfo"/> <label style="display:inline;" for="saveinfo"><?php _e( 'Use a new credit card.', 'woocommerce-gateway-peach-payments' ); ?></label><br />
+
+			</p>
+			<div class="clear"></div>
+
+		</fieldset>
+		<?php
+	}
+
+	//function payment_fields() {}
 	/**
      * Process the subscription payment and return the result
      *
@@ -37,8 +72,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 		$order = new WC_Order( $order_id );
 
-		if ( class_exists( 'WC_Subscriptions_Order' ) && WC_Subscriptions_Order::order_contains_subscription( $order_id ) ) {
-
+		if ( function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_order_contains_renewal( $order_id )) ) {
+			
+			
+			
 			try {
 				// Check if paying with registered payment method
 				if ( isset( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
@@ -52,10 +89,13 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 					}
 
 					$initial_payment = WC_Subscriptions_Order::get_total_initial_payment( $order );
+					
+					
 
 					if ( $initial_payment > 0 ) {
+						//print_r('if');
 						$response = $this->execute_post_subscription_payment_request( $order, $initial_payment, $payment_id );
-
+						//print_r($response);
 						if ( is_wp_error( $response ) ) {
 							throw new Exception( $response->get_error_message() );
 						}
@@ -66,15 +106,36 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							$order->update_status('failed', sprintf(__('Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), woocommerce_clean( $data['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg ('registered_payment', 'NOK', $redirect_url );
 						} elseif ( $response['PROCESSING.RESULT'] == 'ACK' ) {
+							
+
 							$order->payment_complete();
+							
+							$force_complete = false;
+							if ( sizeof( $order->get_items() ) > 0 ) {
+								foreach ( $order->get_items() as $item ) {
+									if ( $_product = $order->get_product_from_item( $item ) ) {
+										if($_product->is_downloadable() || $_product->is_virtual()) {
+											$force_complete = true;
+										}
+							
+									}
+								}
+							}	
+							if($force_complete){						
+								$order->update_status('completed', __('Order status changed from Processing to Completed.', 'woocommerce-gateway-peach-payments') );
+							}
+							
 							$order->add_order_note( sprintf(__('Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), woocommerce_clean( $data['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						}
 
 					} else {
+						//print_r('else');
 						update_post_meta( $order->id, '_peach_subscription_payment_method', $payment_id );
 						$redirect_url = $this->get_return_url( $order );
 					}
+					
+					//die(print_r($redirect_url));
 
 					return array(
 			          'result'   => 'success',
@@ -153,25 +214,42 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 	 * @access public
 	 * @return void
 	 */
-	function scheduled_subscription_payment( $amount_to_charge, $order, $product_id ) {
+	/*function scheduled_subscription_payment( $amount_to_charge, $renewal_order ) {
 
 		$payment_id =get_post_meta( $order->id, '_peach_subscription_payment_method', true );
-		$result = $this->execute_post_subscription_payment_request( $order, $amount_to_charge, $payment_id );
+		$result = $this->execute_post_subscription_payment_request( $renewal_order, $amount_to_charge, $payment_id );
 
 		if ( is_wp_error( $result ) ) {
+			$order_note = __('Scheduled Subscription Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments');
+			$order->add_order_note($order_note);
+			$renewal_order->update_status( 'failed', $order_note );
+		} elseif ( $result['PROCESSING.RESULT'] == 'NOK' ) {
+			$order_note = sprintf(__('Scheduled Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), woocommerce_clean($result['PROCESSING.RETURN']) ) ;
+			$order->add_order_note($order_note);
+			$renewal_order->update_status( 'failed', $order_note );		
+		} 
+
+	}*/
+	
+	function scheduled_subscription_payment( $amount_to_charge, $order, $product_id ) {
+	
+		$payment_id =get_post_meta( $order->id, '_peach_subscription_payment_method', true );
+		$result = $this->execute_post_subscription_payment_request( $order, $amount_to_charge, $payment_id );
+	
+		if ( is_wp_error( $result ) ) {
 			$order->add_order_note( __('Scheduled Subscription Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments') );
-			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );	
+			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
 		} elseif ( $result['PROCESSING.RESULT'] == 'NOK' ) {
 			$order->add_order_note( sprintf(__('Scheduled Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), woocommerce_clean($result['PROCESSING.RETURN']) ) );
-			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );		
+			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
 		} elseif ( $result['PROCESSING.RESULT'] == 'ACK' ) {
 			$order->add_order_note( sprintf(__('Scheduled Subscription Payment Accepted: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), woocommerce_clean($result['PROCESSING.RETURN']) )  );
 			WC_Subscriptions_Manager::process_subscription_payments_on_order( $order );
 		}else{
 			$order->add_order_note( __('Scheduled Subscription Payment Failed: An unknown error has occured - Peach Payments', 'woocommerce-gateway-peach-payments') );
-			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );				
+			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
 		}
-
+	
 	}
 
 	/**
@@ -189,7 +267,6 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		$order_items = $order->get_items();
 		$product = $order->get_product_from_item( array_shift( $order_items ) );
 		$subscription_name = sprintf( __( 'Subscription for "%s"', 'woocommerce-gateway-peach-payments' ), $product->get_title() ) . ' ' . sprintf( __( '(Order %s)', 'woocommerce-gateway-peach-payments' ), $order->get_order_number() );
-	
 
 		$payment_request = array(
 	      	'PAYMENT.CODE'					=> 'CC.DB',
@@ -197,7 +274,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 	      	'IDENTIFICATION.TRANSACTIONID'	=> $order->id,
      		'IDENTIFICATION.SHOPPERID'		=> $order->user_id,  
 
-	      	'PRESENTATION.USAGE'			=> $subscription_name,
+	      	'PRESENTATION.USAGE'			=> sprintf( __( '%s - Order #%s', 'woocommerce-gateway-peach-payments' ), esc_html( get_bloginfo( 'name', 'woocommerce-gateway-peach-payments' ) ), $order->get_order_number() ),
      		'PRESENTATION.AMOUNT'			=> $amount,
 	      	'PRESENTATION.CURRENCY'			=> 'ZAR',
 
@@ -217,7 +294,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			'method'		=> 'POST', 
 			'body'			=> $request,
 			'timeout' 		=> 70,
-			'sslverify' 	=> false,
+			'sslverify' 	=> true,
 			'user-agent' 	=> 'WooCommerce ' . $woocommerce->version
 		));
 
@@ -264,7 +341,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 		$order_id = $parsed_response->transaction->identification->transactionid;
 
-		if ( class_exists( 'WC_Subscriptions_Order' ) && WC_Subscriptions_Order::order_contains_subscription( $order_id ) ) {
+		if ( function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_order_contains_renewal( $order_id ))) {
 
 			$order = new WC_Order( $order_id );
 
@@ -293,6 +370,8 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						$redirect_url = add_query_arg ('registered_payment', 'NOK', $redirect_url );
 					} elseif ( $response['PROCESSING.RESULT'] == 'ACK' ) {
 						$order->payment_complete();
+						
+						$order->update_status('failed', __('Order status changed from Processing to Completed.', 'woocommerce-gateway-peach-payments') );
 						$order->add_order_note( sprintf(__('Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), woocommerce_clean( $data['PROCESSING.RETURN'] ) ) );
 						update_post_meta( $order->id, '_peach_subscription_payment_method', $payment_id );
 						$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
@@ -339,7 +418,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
     function generate_peach_payments_form( $order_id ) {
 		global $woocommerce;
 
-		if ( class_exists( 'WC_Subscriptions_Order' ) && WC_Subscriptions_Order::order_contains_subscription( $order_id ) ) {
+		if ( function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_order_contains_renewal( $order_id )) ) {
 
 			$order = new WC_Order( $order_id );
 
@@ -397,7 +476,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
 					throw new Exception( __( 'Invalid', 'woocommerce-gateway-peach-payments' ) );
 				} else {
-					update_post_meta( $original_order->id, '_peach_subscription_payment_method', $payment_id );	
+					update_post_meta( $original_order->id, '_peach_subscription_payment_method', $payment_id  );	
 				}
 			} elseif ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'saveinfo' ) ) {
 					$subscription_request = array(
@@ -450,5 +529,69 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			return;
 		}
 	}
+	
+	/**
+	 * Include the payment meta data required to process automatic recurring payments so that store managers can
+	 * manually set up automatic recurring payments for a customer via the Edit Subscription screen in Subscriptions v2.0+.
+	 *
+	 * @since 2.4
+	 * @param array $payment_meta associative array of meta data required for automatic payments
+	 * @param WC_Subscription $subscription An instance of a subscription object
+	 * @return array
+	 */
+	public function add_subscription_payment_meta( $payment_meta, $subscription ) {
+		$payment_meta[ $this->id ] = array(
+				'post_meta' => array(
+						'_peach_payment_token' => array(
+								'value' => get_post_meta( $subscription->id, '_peach_subscription_payment_method', true ),
+								'label' => 'Peach Payment Method',
+						),
+				),
+		);
+		return $payment_meta;
+	}
+	/**
+	 * Validate the payment meta data required to process automatic recurring payments so that store managers can
+	 * manually set up automatic recurring payments for a customer via the Edit Subscription screen in Subscriptions 2.0+.
+	 *
+	 * @since 2.4
+	 * @param string $payment_method_id The ID of the payment method to validate
+	 * @param array $payment_meta associative array of meta data required for automatic payments
+	 * @return array
+	 */
+	public function validate_subscription_payment_meta( $payment_method_id, $payment_meta ) {
+		if ( $this->id === $payment_method_id ) {
+			if ( ! isset( $payment_meta['post_meta']['_peach_subscription_payment_method']['value'] ) || empty( $payment_meta['post_meta']['_peach_subscription_payment_method']['value'] ) ) {
+				throw new Exception( 'A "_peach_subscription_payment_method" value is required.' );
+			}
+		}
+	}	
+	
+	/**
+	 * Don't transfer customer meta to resubscribe orders.
+	 *
+	 * @access public
+	 * @param int $resubscribe_order The order created for the customer to resubscribe to the old expired/cancelled subscription
+	 * @return void
+	 */
+	public function delete_resubscribe_meta( $resubscribe_order ) {
+		delete_post_meta( $resubscribe_order->id, '_peach_payment_id' );
+	}
+
+	/**
+	 * Store the customer and card IDs on the order and subscriptions in the order
+	 *
+	 * @param int $order_id
+	 * @param string $customer_id
+	 */
+	protected function save_subscription_meta( $order_id, $customer_id ) {
+		$customer_id = wc_clean( $customer_id );
+	
+		update_post_meta( $order_id, '_peach_subscription_payment_method', $customer_id );
+		// Also store it on the subscriptions being purchased in the order
+		foreach( wcs_get_subscriptions_for_order( $order_id ) as $subscription ) {
+			update_post_meta( $subscription->id, '_peach_subscription_payment_method', $customer_id );
+		}
+	}	
 
 }

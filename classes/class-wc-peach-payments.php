@@ -35,7 +35,9 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			'subscription_suspension',
 			'subscription_amount_changes',
 			'subscription_payment_method_change',
-			'subscription_date_changes'
+			'subscription_payment_method_change_admin',
+			'subscription_date_changes',
+			'multiple_subscriptions'
 		);
 
 		$this->available_currencies = array( 'ZAR' );
@@ -421,6 +423,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		$order = new WC_Order( $order_id );
 
 		$payment_token = get_post_meta( $order_id, '_peach_payment_token', true );
+		
 		$merchant_endpoint = add_query_arg( 'wc-api', 'WC_Peach_Payments', home_url( '/' ) );
 
 		$supported_cards = implode( ' ', $this->cards );
@@ -441,7 +444,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		$token = $_GET['token'];
 
 		$parsed_response = $this->get_token_status( $token );
-
+		
 		if ( is_wp_error( $parsed_response ) ) {
 			$order->update_status('failed', __('Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments') );
 			wp_safe_redirect( $this->get_return_url( $order ) );
@@ -638,7 +641,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			'method'		=> 'POST', 
 			'body'			=> $request,
 			'timeout' 		=> 70,
-			'sslverify' 	=> false,
+			'sslverify' 	=> true,
 			'user-agent' 	=> 'WooCommerce ' . $woocommerce->version
 		));
 
@@ -657,6 +660,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 	    //create redirect link
 	    $redirect_url = $this->get_return_url( $order );
+	    
 
 		if ( $data['PROCESSING.RESULT'] == 'NOK' ) {
 
