@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Peach Payments Gateway
  * Plugin URI: http://woothemes.com/products/peach-payments/
  * Description: A payment gateway for Peach Payments.
- * Version: 1.0.1
+ * Version: 1.0.8
  * Author: LightSpeed
  * Author URI: https://lsdev.biz/
  * Requires at least: 3.8
@@ -28,6 +28,7 @@ add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
  *
  * @since 1.0.0
  */
+
 function woocommerce_peach_payments_init() {
 
 	if ( ! class_exists( 'WC_Payment_Gateway' ) )
@@ -37,8 +38,10 @@ function woocommerce_peach_payments_init() {
 
 	load_plugin_textdomain( 'woocommerce-gateway-peach-payments', false, trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) );
 
-	if ( class_exists( 'WC_Subscriptions_Order' ) )
+	if ( class_exists( 'WC_Subscriptions_Order' ) ) {
 		include_once( 'classes/class-wc-peach-payments-subscriptions.php' );
+		include_once( plugin_basename( 'deprecated/class-wc-peach-payments-subscriptions-deprecated.php' ) );
+	}
 
 	add_filter('woocommerce_payment_gateways', 'woocommerce_peach_payments_add_gateway' );
 
@@ -57,7 +60,9 @@ function woocommerce_peach_payments_init() {
 			wp_die( __( 'Unable to verify deletion, please try again', 'woocommerce-gateway-peach-payments' ) );
 		}
 
+		$credit_cards = get_user_meta( get_current_user_id(), '_peach_payment_id', false );
 		$credit_card = $credit_cards[ (int) $_POST['peach_delete_card'] ];
+		
 		delete_user_meta( get_current_user_id(), '_peach_payment_id', $credit_card );
 
 		wc_add_notice( __('Card deleted.', 'woocommerce-gateway-peach-payments'), 'success' );
@@ -142,9 +147,16 @@ function woocommerce_peach_payments_init() {
  * @since 1.0.0
  */
 function woocommerce_peach_payments_add_gateway( $methods ) {
-	if ( class_exists( 'WC_Subscriptions_Order' ) )
+	if ( class_exists( 'WC_Subscriptions_Order' ) ) {
+
+		if ( ! function_exists( 'wcs_create_renewal_order' ) ) { // Subscriptions < 2.0
+			$methods[] = 'WC_Peach_Payments_Subscriptions_Deprecated';
+		} else {
 			$methods[] = 'WC_Peach_Payments_Subscriptions';
-		else
-			$methods[] = 'WC_Peach_Payments';
+		}		
+		
+	}else {
+		$methods[] = 'WC_Peach_Payments';
+	}
 	return $methods;
 } // End woocommerce_peach_payments_add_gateway()
