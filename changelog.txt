@@ -2,6 +2,7 @@
 2015.11.17 - version 1.0.10
  * Fixed the Virtual Subscription with a Free trial bug.
  * Fixed the process_post_status() function from calling the get_token_status function twice.
+ * Added in support for a "Diners Club" card.
 
 2015.10.14 - version 1.0.8
  * Add WC_Addons_Gateway_Simplify_Commerce_Deprecated 
