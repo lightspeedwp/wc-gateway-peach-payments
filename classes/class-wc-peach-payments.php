@@ -135,6 +135,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 										'VISA' => 'VISA', 
 										'MASTER' => 'Master Card', 
 										'AMEX' => 'American Express',
+										'DINERS' => 'Diners Club',
 									),
 					'default'		=> array( 'VISA', 'MASTER' ),
 					'class'         => 'chosen_select',
@@ -337,7 +338,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 				        'CONTACT.IP'					=> $_SERVER['REMOTE_ADDR']
 			     		);
 
-				//if ( $_POST['peach_payment_id'] == 'saveinfo' ) {
+				if ( $_POST['peach_payment_id'] == 'saveinfo' ) {
 					$payment_request = array(
 						'PAYMENT.TYPE'					=> 'RG',
 						'RECURRENCE.MODE'				=> 'INITIAL'
@@ -351,8 +352,8 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 					if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {
 						$payment_request['CRITERION.USE_3D_SIMULATOR'] = 'false';
 					}
-				//} 
-				/*else {
+				} 
+				else {
 					$payment_request = array(
 						'PAYMENT.TYPE'					=> 'DB',
 						'PRESENTATION.USAGE'			=> 'Order ' . $order->get_order_number(),
@@ -363,7 +364,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 					if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {
 						$payment_request['CRITERION.USE_3D_SIMULATOR'] = 'false';
 					}
-				}*/
+				}
 
 				$order_request = array_merge( $order_request, $this->base_request );
 				$request = array_merge( $payment_request, $order_request );
@@ -376,8 +377,6 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 				if ( is_wp_error( $json_token_response ) ) {
 					throw new Exception( $json_token_response->get_error_message() );
 				}
-				//print_r($json_token_response);
-				//die(print_r($request));
 
 				//token received - offload payment processing to copyandpay form
 				return array(
@@ -430,8 +429,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 		$supported_cards = implode( ' ', $this->cards );
 		
-		//return '<form action="' . $merchant_endpoint . '" id="' . $payment_token . '">' . $supported_cards . '</form>';
-		return '<form action="' . $merchant_endpoint . '" id="' . $payment_token . '">MASTER VISA</form>';
+		return '<form action="' . $merchant_endpoint . '" id="' . $payment_token . '">' . $supported_cards . '</form>';
 
 	}
 
@@ -515,18 +513,12 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		//This is jsut incase there are any errors that we have not handled yet.
 		if ( ! empty( $parsed_response->errorMessage ) ) {
 			$order->update_status('failed', sprintf(__('Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), $parsed_response->errorMessage ) );
-			/*print_r('is it here - 7');
-			 print_r($order);
-			die();*/
 			wp_safe_redirect( $this->get_return_url( $order ) );
 			exit;
 		
 		} elseif ( $parsed_response->transaction->processing->result == 'NOK' ) {
 		
 			$order->update_status('failed', sprintf(__('Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), $parsed_response->transaction->processing->return->message ) );
-			/*print_r('is it here - 8');
-			 print_r($order);
-			die();*/
 			wp_safe_redirect( $this->get_return_url( $order ) );
 			exit;
 		}		
