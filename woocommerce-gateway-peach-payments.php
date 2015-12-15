@@ -2,12 +2,12 @@
 /**
  * Plugin Name: WooCommerce Peach Payments Gateway
  * Plugin URI: http://woothemes.com/products/peach-payments/
- * Description: A payment gateway for Peach Payments.
- * Version: 1.0.8
+ * Description: A payment gateway for <a href="http://www.peachpayments.com/">Peach Payments</a>.
+ * Version: 1.0.10
  * Author: LightSpeed
  * Author URI: https://lsdev.biz/
  * Requires at least: 3.8
- * Tested up to: 3.9.1
+ * Tested up to: 4.3.1
  */
 
 /**
@@ -129,6 +129,12 @@ function woocommerce_peach_payments_init() {
 			case 'VISA':
 				$html = '<img src="' . plugins_url( '/assets/images/visa.png', __FILE__ ) . '" title="VISA" alt="VISA" />';
 				break;
+			case 'DINERS':
+				$html = '<img src="' . plugins_url( '/assets/images/diners.png', __FILE__ ) . '" title="DINERS" alt="DINERS" />';
+				break;
+			case 'AMEX':
+				$html = '<img src="' . plugins_url( '/assets/images/amex.png', __FILE__ ) . '" title="AMEX" alt="AMEX" />';
+				break;									
 			default:
 				$html = '';
 				break;
