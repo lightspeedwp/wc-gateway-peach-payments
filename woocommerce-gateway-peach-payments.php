@@ -2,10 +2,12 @@
 /**
  * Plugin Name: WooCommerce Peach Payments Gateway
  * Plugin URI: http://woothemes.com/products/peach-payments/
- * Description: A payment gateway for <a href="http://www.peachpayments.com/">Peach Payments</a>.
+ * Description: A payment gateway integration between WooCommerce and Peach Payments.
  * Version: 1.0.10
- * Author: LightSpeed
- * Author URI: https://lsdev.biz/
+ * Author: WooThemes
+ * Author URI: http://woothemes.com/
+ * Developer: LightSpeed
+ * Developer URI: https://lsdev.biz/
  * Requires at least: 3.8
  * Tested up to: 4.3.1
  */
@@ -62,7 +64,7 @@ function woocommerce_peach_payments_init() {
 
 		$credit_cards = get_user_meta( get_current_user_id(), '_peach_payment_id', false );
 		$credit_card = $credit_cards[ (int) $_POST['peach_delete_card'] ];
-		
+
 		delete_user_meta( get_current_user_id(), '_peach_payment_id', $credit_card );
 
 		wc_add_notice( __('Card deleted.', 'woocommerce-gateway-peach-payments'), 'success' );
@@ -134,7 +136,7 @@ function woocommerce_peach_payments_init() {
 				break;
 			case 'AMEX':
 				$html = '<img src="' . plugins_url( '/assets/images/amex.png', __FILE__ ) . '" title="AMEX" alt="AMEX" />';
-				break;									
+				break;
 			default:
 				$html = '';
 				break;
@@ -159,8 +161,8 @@ function woocommerce_peach_payments_add_gateway( $methods ) {
 			$methods[] = 'WC_Peach_Payments_Subscriptions_Deprecated';
 		} else {
 			$methods[] = 'WC_Peach_Payments_Subscriptions';
-		}		
-		
+		}
+
 	}else {
 		$methods[] = 'WC_Peach_Payments';
 	}
