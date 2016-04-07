@@ -201,7 +201,13 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	public function enqueue_scripts() {
 	
 		if ( is_checkout_pay_page() && !isset($_GET['registered_payment']) )  {		
-			wp_enqueue_script( 'peach-payments-widget-js', $this->gateway_url. 'widget/v3/widget.js?language=en&style=none');
+			$order_id = get_query_var( 'order-pay', 'false' );
+			if(false !== $order_id){
+				$payment_token = get_post_meta( $order_id, '_peach_payment_token', true );
+				if(false !== $payment_token){
+					wp_enqueue_script( 'peach-payments-widget-js', $this->gateway_url. 'widget/v4/widget.js?language=en&style=none&jsessionid='.$payment_token);
+				}
+			}
 			wp_enqueue_style( 'peach-payments-widget-css', plugins_url( 'assets/css/cc-form.css', dirname(__FILE__) ) );
 		}
 	
