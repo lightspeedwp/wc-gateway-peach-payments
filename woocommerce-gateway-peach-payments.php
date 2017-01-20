@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: WooCommerce Peach Payments Gateway
- * Plugin URI: http://woothemes.com/products/peach-payments/
+ * Plugin URI: https://woocommerce.com/products/peach-payments/
  * Description: A payment gateway integration between WooCommerce and Peach Payments.
  * Version: 1.0.11
- * Author: WooThemes
- * Author URI: http://woothemes.com/
+ * Author: WooCommerce
+ * Author URI: https://woocommerce.com/
  * Developer: LightSpeed
  * Developer URI: https://lsdev.biz/
  * Requires at least: 3.8
