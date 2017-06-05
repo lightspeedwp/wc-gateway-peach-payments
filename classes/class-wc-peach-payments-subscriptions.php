@@ -335,7 +335,9 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			$token = $_GET['token'];
 			
 			$parsed_response = $this->get_token_status( $token );
-			
+			$order_id = $parsed_response->transaction->identification->transactionid;
+			$order = new WC_Order( $order_id );
+
 			if ( $parsed_response->transaction->payment->code == 'CC.RG' && $parsed_response->transaction->processing->result == 'NOK' ) {
 				$order->update_status('pending', __('Registration Failed: Card registration was not accpeted - Peach Payments', 'woocommerce-gateway-peach-payments') );
 				wp_safe_redirect( $this->get_checkout_payment_url( true ) );
@@ -349,8 +351,6 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			}
 			
 			$order_id = $parsed_response->transaction->identification->transactionid;			
-
-			$order = new WC_Order( $order_id );
 
 			//handle card registration
 			if (  $parsed_response->transaction->payment->code == 'CC.RG'  ) {
