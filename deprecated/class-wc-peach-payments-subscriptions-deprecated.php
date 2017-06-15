@@ -15,7 +15,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 		parent::__construct();		
 
 		if ( class_exists( 'WC_Subscriptions_Order' ) ) {
-			add_action( 'scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 3 );
+			add_action( 'scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 2 );
 			add_filter( 'woocommerce_subscriptions_renewal_order_meta_query', array( $this, 'remove_renewal_order_meta' ), 10, 4 );
 			add_action( 'woocommerce_subscriptions_changed_failing_payment_method_peach-payments', array( &$this, 'update_failing_payment_method' ), 10, 3 );
 		}
@@ -50,11 +50,13 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 	 * @access public
 	 * @return void
 	 */
-	function scheduled_subscription_payment( $amount_to_charge, $order, $product_id ) {
+	function scheduled_subscription_payment( $amount_to_charge, $order ) {
 	
-		$payment_id =get_post_meta( $order->id, '_peach_subscription_payment_method', true );
+		$payment_id =get_post_meta( $order->get_id(), '_peach_subscription_payment_method', true );
 		$result = $this->execute_post_subscription_payment_request( $order, $amount_to_charge, $payment_id );
-	
+
+		$product_id = 0;
+
 		if ( is_wp_error( $result ) ) {
 			$order->add_order_note( __('Scheduled Subscription Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments') );
 			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
@@ -92,7 +94,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 		$payment_request = array(
 				'PAYMENT.CODE'					=> 'CC.DB',
 	
-				'IDENTIFICATION.TRANSACTIONID'	=> $order->id,
+				'IDENTIFICATION.TRANSACTIONID'	=> $order->get_id(),
 				'IDENTIFICATION.SHOPPERID'		=> $order->user_id,
 	
 				'PRESENTATION.USAGE'			=> $subscription_name,
