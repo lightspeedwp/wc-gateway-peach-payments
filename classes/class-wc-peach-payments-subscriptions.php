@@ -6,9 +6,8 @@
  *
  * @class 		WC_Peach_Payments_Subscriptions
  * @extends		WC_Peach_Payments
- * @version		1.6.6
  * @package		WC_Peach_Payments
- * @author 		Domenico Nusca
+ * @author 		LightSpeed
  */
 class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
@@ -77,7 +76,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				// Check if paying with registered payment method
 				if ( isset( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 					
-					$payment_ids = get_user_meta( $order->user_id, '_peach_payment_id', false );
+					$payment_ids = get_user_meta( $this->get_customer_id($order), '_peach_payment_id', false );
 					$payment_id = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
 
 					//throw exception if payment method does not exist
@@ -105,11 +104,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							$force_complete = false;
 							if ( sizeof( $order->get_items() ) > 0 ) {
 								foreach ( $order->get_items() as $item ) {
-									if ( $_product = $item->get_product()) {
+									if ( $_product = $this->get_item_product($item,$order)) {
 										if($_product->is_downloadable() || $_product->is_virtual()) {
 											$force_complete = true;
 										}
-							
 									}
 								}
 							}	
@@ -117,9 +115,9 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 								$order->update_status('completed');
 							}
 
-							update_post_meta( $order->get_id(), '_peach_subscription_payment_method', $payment_id );
-
-							$this->log( '128 Order ID '.$order->get_id().' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
+							update_post_meta( $this->get_order_id($order), '_peach_subscription_payment_method', $payment_id );
+							$this->save_subscription_meta($this->get_order_id($order), $payment_id);
+							$this->log( '128 Order ID '.$this->get_order_id($order).' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
 							$order->add_order_note( sprintf(__('Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'),  wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						}
@@ -127,8 +125,9 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 					} else {
 						
 						$order->payment_complete();
-						update_post_meta( $order->get_id(), '_peach_subscription_payment_method', $payment_id );
-						$this->log( '137 Order ID '.$order->get_id().' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
+						update_post_meta( $this->get_order_id($order), '_peach_subscription_payment_method', $payment_id );
+						$this->save_subscription_meta($this->get_order_id($order), $payment_id);
+						$this->log( '137 Order ID '.$this->get_order_id($order).' Parent ID '.$this->get_order_id($order).' Payment ID '.$payment_id );
 						$redirect_url = $this->get_return_url( $order );
 					}
 
@@ -144,7 +143,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				else/*if ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'saveinfo' ) )*/ {
 					$subscription_request = array(
 			     		'IDENTIFICATION.TRANSACTIONID'	=> $order_id,
-			     		'IDENTIFICATION.SHOPPERID'		=> $order->user_id,     		
+			     		'IDENTIFICATION.SHOPPERID'		=> $this->get_customer_id($order),
 
 			     		'NAME.GIVEN'					=> $order->billing_first_name,
 				     	'NAME.FAMILY'					=> $order->billing_last_name, 
@@ -228,11 +227,11 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 	
 	function scheduled_subscription_payment( $amount_to_charge, $order ) {
 
-		if ( wcs_order_contains_renewal( $order->get_id() ) ) {
-			$payment_method_order_id = WC_Subscriptions_Renewal_Order::get_parent_order_id( $order->get_id() );
+		if ( wcs_order_contains_renewal( $this->get_order_id($order) ) ) {
+			$payment_method_order_id = WC_Subscriptions_Renewal_Order::get_parent_order_id( $this->get_order_id($order) );
 			$payment_id = get_post_meta( $payment_method_order_id, '_peach_subscription_payment_method', true );
 		}else{
-			$payment_id = get_post_meta( $order->get_id(), '_peach_subscription_payment_method', true );
+			$payment_id = get_post_meta( $this->get_order_id($order), '_peach_subscription_payment_method', true );
 		}
 		$result = $this->execute_post_subscription_payment_request( $order, $amount_to_charge, $payment_id );
 
@@ -276,16 +275,17 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		$data = array();
 
 		$order_items = $order->get_items();
-		$product = $order->get_product_from_item( array_shift( $order_items ) );
+		$product = $this->get_item_product(array_shift( $order_items ),$order);
 		$subscription_name = sprintf( __( 'Subscription for "%s"', 'woocommerce-gateway-peach-payments' ), $product->get_title() ) . ' ' . sprintf( __( '(Order %s)', 'woocommerce-gateway-peach-payments' ), $order->get_order_number() );
 
-		$payment_request = array(
+
+        $payment_request = array(
 	      	'PAYMENT.CODE'					=> 'CC.DB',
 
-	      	'IDENTIFICATION.TRANSACTIONID'	=> $order->get_id(),
-     		'IDENTIFICATION.SHOPPERID'		=> $order->user_id,  
+	      	'IDENTIFICATION.TRANSACTIONID'	=> $this->get_order_id($order),
+     		'IDENTIFICATION.SHOPPERID'		=> $this->get_customer_id($order),
 
-	      	'PRESENTATION.USAGE'			=> sprintf( __( '%s - Order #%s', 'woocommerce-gateway-peach-payments' ), esc_html( get_bloginfo( 'name', 'woocommerce-gateway-peach-payments' ) ), $order->get_order_number() ),
+	      	'PRESENTATION.USAGE'			=> $subscription_name,
      		'PRESENTATION.AMOUNT'			=> $amount,
 	      	'PRESENTATION.CURRENCY'			=> 'ZAR',
 
@@ -395,7 +395,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						$force_complete = false;
 						if ( sizeof( $order->get_items() ) > 0 ) {
 							foreach ( $order->get_items() as $item ) {
-								if ( $_product = $order->get_product_from_item( $item ) ) {
+								if ( $_product = $this->get_item_product($item,$order)) {
 									if($_product->is_downloadable() || $_product->is_virtual()) {
 										$force_complete = true;
 									}
@@ -407,18 +407,20 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						}
 						
 						$order->add_order_note( sprintf(__('Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), wc_clean( $response['PROCESSING.RETURN'] ) ) );
-						update_post_meta( $order->get_id(), '_peach_subscription_payment_method', $payment_id );
+						update_post_meta( $this->get_order_id($order), '_peach_subscription_payment_method', $payment_id );
+                        $this->save_subscription_meta($this->get_order_id($order), $payment_id);
 
 						//Remove this
-						$this->log( '415 Order ID '.$order->get_id().' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
+						$this->log( '415 Order ID '.$this->get_order_id($order).' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
 						$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						
 					}
 
 				} else {
 					$order->payment_complete();
-					update_post_meta( $order->get_id(), '_peach_subscription_payment_method', $payment_id );
-					$this->log( '423 Order ID '.$order->get_id().' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
+					update_post_meta( $this->get_order_id($order), '_peach_subscription_payment_method', $payment_id );
+					$this->save_subscription_meta($this->get_order_id($order), $payment_id);
+					$this->log( '423 Order ID '.$this->get_order_id($order).' Parent ID '.$this->get_order_id($order).' Payment ID '.$payment_id );
 					$redirect_url = $this->get_return_url( $order );
 				}
 
@@ -508,19 +510,19 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			// Check if paying with registered payment method
 			if ( isset( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 				
-				$payment_ids = get_user_meta( $original_order->user_id, '_peach_payment_id', false );
+				$payment_ids = get_user_meta( $this->get_customer_id($original_order), '_peach_payment_id', false );
 				$payment_id = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
 
 				//throw exception if payment method does not exist
 				if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
 					throw new Exception( __( 'Invalid', 'woocommerce-gateway-peach-payments' ) );
 				} else {
-					update_post_meta( $original_order->get_id(), '_peach_subscription_payment_method', $payment_id  );
+					update_post_meta( $this->get_order_id($original_order), '_peach_subscription_payment_method', $payment_id  );
 				}
 			} elseif ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'saveinfo' ) ) {
 					$subscription_request = array(
-			     		'IDENTIFICATION.TRANSACTIONID'	=> $original_order->get_id(),
-			     		'IDENTIFICATION.SHOPPERID'		=> $original_order->user_id,     		
+			     		'IDENTIFICATION.TRANSACTIONID'	=> $this->get_order_id($original_order),
+			     		'IDENTIFICATION.SHOPPERID'		=> $this->get_customer_id($original_order),
 
 			     		'NAME.GIVEN'					=> $original_order->billing_first_name,
 				     	'NAME.FAMILY'					=> $original_order->billing_last_name, 
@@ -582,7 +584,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		$payment_meta[ $this->id ] = array(
 				'post_meta' => array(
 						'_peach_payment_token' => array(
-								'value' => get_post_meta( $subscription->get_id(), '_peach_subscription_payment_method', true ),
+								'value' => get_post_meta( $this->get_order_id($subscription), '_peach_subscription_payment_method', true ),
 								'label' => 'Peach Payment Method',
 						),
 				),
@@ -613,12 +615,12 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 	 * Store the customer and card IDs on the order and subscriptions in the order
 	 *
 	 * @param int $order_id
-	 * @param string $customer_id
+	 * @param string $payment_id
 	 */
 	protected function save_subscription_meta( $order_id, $payment_id ) {
 		// Also store it on the subscriptions being purchased in the order
 		foreach( wcs_get_subscriptions_for_order( $order_id ) as $subscription ) {
-			update_post_meta( $subscription->get_id(), '_peach_subscription_payment_method', $payment_id );
+			update_post_meta( $this->get_order_id($subscription), '_peach_subscription_payment_method', $payment_id );
 		}
 	}
 }

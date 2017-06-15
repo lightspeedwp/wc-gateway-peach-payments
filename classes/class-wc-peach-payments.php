@@ -6,9 +6,8 @@
  *
  * @class 		WC_Peach_Payments
  * @extends		WC_Payment_Gateway
- * @version		1.6.6
- * @package		WooCommerce/Classes/Payment
- * @author 		Domenico Nusca, Warwick Booth
+ * @package		WC_Peach_Payments
+ * @author 		LightSpeed
  */
 
 class WC_Peach_Payments extends WC_Payment_Gateway {
@@ -321,6 +320,62 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		}
 	}
 
+
+	/**
+	 * Grab the ID from the WC Order Object, handles 2.5 -> 3.0 compatibility
+	 *
+	 * @param object $order WC_Order
+     * @return string post_id
+	 */
+	public function get_order_id($order){
+	    $return = 0 ;
+	    if(is_object($order)) {
+			if (defined('WC_VERSION') && WC_VERSION >= 2.6) {
+				$return = $order->get_id();
+			} else {
+				$return = $order->id;
+			}
+		}
+        return $return;
+    }
+
+	/**
+	 * Grab the Customer ID from the WC Order Object, handles 2.5 -> 3.0 compatibility
+	 *
+	 * @param object $order WC_Order
+	 * @return string user_id
+	 */
+	public function get_customer_id($order){
+		$return = 0 ;
+		if(is_object($order)) {
+			if (defined('WC_VERSION') && WC_VERSION >= 2.6) {
+				$return = $order->get_customer_id();
+			} else {
+				$return = $order->user_id;
+			}
+		}
+		return $return;
+	}
+
+	/**
+	 * Grab the product from the $item WC Order Object, handles 3.0 compatibility
+     *
+	 * @param object $item
+	 * @param object $order WC_Order
+	 * @return string user_id
+	 */
+	public function get_item_product($item=false,$order=false){
+		$return = 0 ;
+		if(false !== $item) {
+			if (defined('WC_VERSION') && WC_VERSION >= 3.0) {
+				$return = $item->get_product();
+			} else {
+				$order->get_product_from_item( $item );
+			}
+		}
+		return $return;
+	}
+
 	/**
 	 * Adds option for registering or using existing Peach Payments details
 	 * 
@@ -399,7 +454,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
      	try {
      		if ( isset( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 				
-				$payment_ids = get_user_meta( $order->get_customer_id(), '_peach_payment_id', false );
+				$payment_ids = get_user_meta( $this->get_customer_id($order), '_peach_payment_id', false );
 				$payment_id = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
 
 				//throw exception if payment method does not exist
@@ -423,7 +478,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 				$order_request = array(
 			     		'IDENTIFICATION.TRANSACTIONID'	=> $order_id,
-			     		'IDENTIFICATION.SHOPPERID'		=> $order->get_customer_id(),
+			     		'IDENTIFICATION.SHOPPERID'		=> $this->get_customer_id($order),
 
 			     		'NAME.GIVEN'					=> $order->billing_first_name,
 				     	'NAME.FAMILY'					=> $order->billing_last_name, 
@@ -755,10 +810,10 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		$payment_request = array(
 	      	'PAYMENT.CODE'					=> 'CC.DB',
 
-	      	'IDENTIFICATION.TRANSACTIONID'	=> $order->get_id(),
-     		'IDENTIFICATION.SHOPPERID'		=> $order->get_customer_id(),
+	      	'IDENTIFICATION.TRANSACTIONID'	=> $this->get_order_id($order),
+     		'IDENTIFICATION.SHOPPERID'		=> $this->get_customer_id($order),
 
-	      	'PRESENTATION.USAGE'			=> 'Order #' . $order->get_order_number(),
+	      	'PRESENTATION.USAGE'			=> 'Order #' . $this->get_order_id($order),
      		'PRESENTATION.AMOUNT'			=> $amount,
 	      	'PRESENTATION.CURRENCY'			=> 'ZAR',
 
