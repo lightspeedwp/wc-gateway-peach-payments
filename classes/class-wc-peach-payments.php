@@ -370,7 +370,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			if (defined('WC_VERSION') && WC_VERSION >= 3.0) {
 				$return = $item->get_product();
 			} else {
-				$order->get_product_from_item( $item );
+				$return = $order->get_product_from_item( $item );
 			}
 		}
 		return $return;
@@ -874,7 +874,6 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
         }
 	}
 
-
 	/**
 	 * add_customer function.
 	 *
@@ -896,5 +895,4 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			) );
 	
 	}
-
 }

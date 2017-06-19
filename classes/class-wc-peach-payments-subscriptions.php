@@ -117,7 +117,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 							update_post_meta( $this->get_order_id($order), '_peach_subscription_payment_method', $payment_id );
 							$this->save_subscription_meta($this->get_order_id($order), $payment_id);
-							$this->log( '128 Order ID '.$this->get_order_id($order).' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
+							$this->log( '128 Order ID '.$this->get_order_id($order).' Parent ID '.$this->get_order_id($order).' Payment ID '.$payment_id );
 							$order->add_order_note( sprintf(__('Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'),  wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						}
@@ -411,7 +411,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
                         $this->save_subscription_meta($this->get_order_id($order), $payment_id);
 
 						//Remove this
-						$this->log( '415 Order ID '.$this->get_order_id($order).' Parent ID '.$order->get_id().' Payment ID '.$payment_id );
+						$this->log( '415 Order ID '.$this->get_order_id($order).' Parent ID '.$this->get_order_id($order).' Payment ID '.$payment_id );
 						$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						
 					}
@@ -430,7 +430,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 			if ( ! empty( $parsed_response->errorMessage ) ) {
 				$this->log( $parsed_response->errorMessage );
-				$order->update_status('failed', sprintf(__('Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), $parsed_response->errorMessage ) );
+				//$order->update_status('failed', sprintf(__('Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), $parsed_response->errorMessage ) );
 				wp_safe_redirect( $this->get_return_url( $order ) );
 				exit;
 
