@@ -1,7 +1,16 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
+2017.06.15 - version 1.0.12
+ * Added in a get_id(),get_customer_id() and a get_item_product() function to help with 2.5 through to 3.0 compatibility.
+ * Fixed the missing meta_key "_peach_subscription_payment_method" on subscription orders.
+ * Added in the WC logger class and calls to record the payments failures.
+ * Added in variable decelerations at the top of each class.
+ * Reworked the logic of the process_payment_status() and process_payment() functions.
+ * Fixed the redirect for failed payment if a card is decliend on the merchants side.
+ * Fixed the Payment Presentation name for subscriptions.  (viewed in the merchant account)
+
 2016.04.07 - version 1.0.11
  * Updated the Copy and Pay form widget.js to V4.
- 
+
 2015.12.15 - version 1.0.10
  * Fixed the Virtual Subscription with a Free trial bug.
  * Fixed the process_post_status() function from calling the get_token_status function twice.
