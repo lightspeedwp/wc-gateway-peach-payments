@@ -1,5 +1,5 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
-2017.06.15 - version 1.0.12
+2017.06.15 - version 1.1.0
  * Added in a get_id(),get_customer_id() and a get_item_product() function to help with 2.5 through to 3.0 compatibility.
  * Fixed the missing meta_key "_peach_subscription_payment_method" on subscription orders.
  * Added in the WC logger class and calls to record the payments failures.
