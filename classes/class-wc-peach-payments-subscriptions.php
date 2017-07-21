@@ -250,7 +250,6 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			$order->add_order_note( sprintf(__('Scheduled Subscription Payment Accepted: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), wc_clean($result['PROCESSING.RETURN']) )  );
 			$order->payment_complete();
 			WC_Subscriptions_Manager::process_subscription_payments_on_order( $order );
-			$order->update_status('completed');
 		}else{
 			$order->add_order_note( __('Scheduled Subscription Payment Failed: An unknown error has occured - Peach Payments', 'woocommerce-gateway-peach-payments') );
 			$this->log( print_r($result,true) );
