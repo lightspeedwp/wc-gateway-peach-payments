@@ -133,3 +133,10 @@
 	display: inline-block;
 	width: 100%;
 }
+
+/** Response HTML */
+.woocommerce-order-pay iframe#cnpIframe {
+	display: block !important;
+	width: 80% !important;
+	margin: 0 auto !important;
+}

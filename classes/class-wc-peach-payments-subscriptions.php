@@ -345,6 +345,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		if ( function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_order_contains_renewal( $order_id ))) {
 
 			$order = wc_get_order( $order_id );
+			$current_order_status = $order->get_status();
+			//Make sure we do not re process any complete or processing orders.
+
+			if ( 'complete' !== $current_order_status && 'processing' !== $current_order_status ) {
 
 			if ( is_wp_error( $parsed_response ) ) {
 				$error_message = __('Subscription Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments');
@@ -441,6 +445,8 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				exit;
 
 			} 
+
+			}
 
 		} else {
 

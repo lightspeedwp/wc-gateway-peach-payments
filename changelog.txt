@@ -1,5 +1,9 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
 
+2018.04.17 version 1.1.2
+ * Added in styling to center the CNP response
+ * Added in a conditional statement to process_payment_status() to make sure Complete and Processing order are not re checked.
+
 2017.07.21 - version 1.1.1
  * Removed the $order->update_status('completed'); forcing the subscription renewals to automatically complete.
 
