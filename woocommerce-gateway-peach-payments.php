@@ -10,6 +10,7 @@
  * Developer URI: https://lsdev.biz/
  * Requires at least: 3.8
  * Tested up to: 4.3.1
+ * Woo: 439020:e875781563c998b4e0cb0e47cd4b7b9a
  */
 
 /**
