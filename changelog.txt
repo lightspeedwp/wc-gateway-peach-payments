@@ -1,5 +1,8 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
 
+2018.09.18 - version 1.1.3
+ * Fix - Fixed the Gateway description which shows on checkout.
+
 2018.04.17 version 1.1.2
  * Added in styling to center the CNP response
  * Added in a conditional statement to process_payment_status() to make sure Complete and Processing order are not re checked.

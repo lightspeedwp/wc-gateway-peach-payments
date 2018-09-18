@@ -33,6 +33,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 	 * @return void
 	 **/
 	function payment_fields() {
+		$description = $this->get_description();
+		if ( $description ) {
+			echo wpautop( wptexturize( $description ) ); // @codingStandardsIgnoreLine.
+		}
 		?>
 		<fieldset>
 

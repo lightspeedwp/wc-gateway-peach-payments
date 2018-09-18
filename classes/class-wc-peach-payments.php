@@ -112,6 +112,9 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			'multiple_subscriptions'
 		);
 
+		$this->title        = $this->get_option( 'title' );
+		$this->description  = $this->get_option( 'description' );
+
 		$this->available_currencies = array( 'ZAR' );
 
 		// Load the form fields.
@@ -383,6 +386,10 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	 * @return void
 	 **/
 	function payment_fields() {
+		$description = $this->get_description();
+		if ( $description ) {
+			echo wpautop( wptexturize( $description ) ); // @codingStandardsIgnoreLine.
+		}
 		?>
 		<fieldset>
 
