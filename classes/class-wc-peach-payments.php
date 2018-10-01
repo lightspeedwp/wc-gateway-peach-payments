@@ -415,10 +415,6 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 				</p>
 				<div class="clear"></div>
 
-		<?php else: ?>
-
-				<p><?php _e( 'Pay using a credit card', 'woocommerce-gateway-peach-payments' ); ?></p>
-
 		<?php endif; ?>
 
 		</fieldset>
