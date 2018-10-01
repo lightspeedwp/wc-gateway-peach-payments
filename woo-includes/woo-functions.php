@@ -2,8 +2,10 @@
 /**
  * Functions used by plugins
  */
-if ( ! class_exists( 'WC_Dependencies' ) )
+if ( ! class_exists( 'WC_Dependencies' ) ) {
 	require_once 'class-wc-dependencies.php';
+}
+
 
 /**
  * WC Detection
@@ -21,8 +23,9 @@ if ( ! function_exists( 'woothemes_queue_update' ) ) {
 	function woothemes_queue_update( $file, $file_id, $product_id ) {
 		global $woothemes_queued_updates;
 
-		if ( ! isset( $woothemes_queued_updates ) )
+		if ( ! isset( $woothemes_queued_updates ) ) {
 			$woothemes_queued_updates = array();
+		}
 
 		$plugin             = new stdClass();
 		$plugin->file       = $file;
@@ -67,7 +70,7 @@ if ( ! class_exists( 'WooThemes_Updater' ) && ! function_exists( 'woothemes_upda
 	 * @return void
 	 */
 	function woothemes_updater_notice() {
-		$active_plugins = apply_filters( 'active_plugins', get_option('active_plugins' ) );
+		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
 		if ( in_array( 'woothemes-updater/woothemes-updater.php', $active_plugins ) ) return;
 
 		$slug = 'woothemes-updater';
@@ -83,7 +86,7 @@ if ( ! class_exists( 'WooThemes_Updater' ) && ! function_exists( 'woothemes_upda
 				$message = '<a href="' . esc_url( admin_url( $activate_url ) ) . '">Activate the WooThemes Updater plugin</a> to get updates for your WooThemes plugins.';
 			}
 		}
-		echo '<div class="updated fade"><p>' . $message . '</p></div>' . "\n";
+		echo '<div class="updated fade"><p>' . esc_html( $message ) . '</p></div>' . "\n";
 	}
 
 	add_action( 'admin_notices', 'woothemes_updater_notice' );
