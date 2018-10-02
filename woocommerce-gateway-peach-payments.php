@@ -24,7 +24,7 @@
 //  */
 // woothemes_queue_update( plugin_basename( __FILE__ ), 'e875781563c998b4e0cb0e47cd4b7b9a', '439020' );
 
-// add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
+add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
 
 /**
  * Initialize the gateway.
