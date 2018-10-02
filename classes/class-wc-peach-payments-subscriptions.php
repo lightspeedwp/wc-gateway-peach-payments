@@ -40,6 +40,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		?>
 		<fieldset>
 
+		<?php if ( is_user_logged_in() && 'yes' == $this->card_storage ) : ?>
 			<p class="form-row form-row-wide test">
 
 				<?php
@@ -60,6 +61,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 			</p>
 			<div class="clear"></div>
+		<?php endif; ?>
 
 		</fieldset>
 		<?php
