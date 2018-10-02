@@ -404,11 +404,11 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 					?>
 
 						<?php foreach ( $credit_cards as $i => $credit_card ) : ?>
-							<input type="radio" id="peach_card_<?php echo $i; ?>" name="peach_payment_id" style="width:auto;" value="<?php echo $i; ?>" />
-							<label style="display:inline;" for="peach_card_<?php echo $i; ?>"><?php echo get_card_brand_image( $credit_card['brand'] ); ?> <?php echo '**** **** **** ' . esc_attr( $credit_card['active_card'] ); ?> (<?php echo esc_attr( $credit_card['exp_month'] ) . '/' . esc_attr( $credit_card['exp_year'] ); ?>)</label><br />
+							<input type="radio" id="peach_card_<?php echo esc_attr( $i ); ?>" name="peach_payment_id" style="width:auto;" value="<?php echo esc_attr( $i ); ?>" />
+							<label style="display:inline;" for="peach_card_<?php echo esc_attr( $i ); ?>"><?php echo esc_html( get_card_brand_image( $credit_card['brand'] ) ); ?> <?php echo '**** **** **** ' . esc_attr( $credit_card['active_card'] ); ?> (<?php echo esc_attr( $credit_card['exp_month'] ) . '/' . esc_attr( $credit_card['exp_year'] ); ?>)</label><br />
 						<?php endforeach; ?>
 
-						<br /> <a class="button" style="float:right;" href="<?php echo get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ); ?>#saved-cards"><?php esc_html_e( 'Manage cards', 'woocommerce-gateway-peach-payments' ); ?></a>
+						<br /> <a class="button" style="float:right;" href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ); ?>#saved-cards"><?php esc_html_e( 'Manage cards', 'woocommerce-gateway-peach-payments' ); ?></a>
 
 					<?php endif; ?>
 
@@ -443,7 +443,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			?>
 			</table><!--/.form-table-->
 		<?php } else { ?>
-			<div class="inline error"><p><strong><?php esc_html_e( 'Gateway Disabled', 'woocommerce-gateway-peach-payments' ); ?></strong> <?php /* translators: %s: store currency */ echo sprintf( esc_html_e( 'Choose South African Rands as your store currency in <a href="%s">General Options</a> to enable the Peach Payments Gateway.', 'woocommerce-gateway-peach-payments' ), admin_url( '?page=woocommerce_settings&tab=general' ) ); ?></p></div>
+			<div class="inline error"><p><strong><?php esc_html_e( 'Gateway Disabled', 'woocommerce-gateway-peach-payments' ); ?></strong> <?php /* translators: %s: store currency */ echo sprintf( esc_html_e( 'Choose South African Rands as your store currency in <a href="%s">General Options</a> to enable the Peach Payments Gateway.', 'woocommerce-gateway-peach-payments' ), esc_url( admin_url( '?page=woocommerce_settings&tab=general' ) ) ); ?></p></div>
 		<?php
 }
 	}
@@ -679,11 +679,12 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 				}
 
 				//This is jsut incase there are any errors that we have not handled yet.
-				if ( ! empty( $parsed_response->errorMessage ) ) {
-					$this->log( $parsed_response->errorMessage );
+				$error_message_index = 'errorMessage';
+				if ( ! empty( $parsed_response->$error_message_index ) ) {
+					$this->log( $parsed_response->$error_message_index );
 					if ( false !== $order ) {
 						/* translators: %s: Payment Failed */
-						$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), $parsed_response->errorMessage ) );
+						$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), $parsed_response->$error_message_index ) );
 					}
 					wp_safe_redirect( $this->get_return_url( $order ) );
 					exit;

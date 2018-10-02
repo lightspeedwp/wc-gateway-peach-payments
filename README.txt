@@ -11,7 +11,7 @@ License: GPLv3
 A payment gateway integration between WooCommerce and Peach Payments.
 
 == Description ==
-The Peach Payments extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets.
+The [Peach Payments](https://www.lsdev.biz/product/woocommerce-peach-payments/) extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets. 
 
 - Secure card storage
 - Fully supports WooCommerce Subscriptions (separate purchase)
@@ -24,7 +24,7 @@ We offer premium support for this plugin. Premium support that can be purchased 
 A Peach Payments Merchant Account.
 A WooCommerce store with “South African Rand ( R )” as the currency.
 
-= Sign up with Peach Payments ↑ Back to top =
+= Sign up with Peach Payments =
 Contact Peach Payments at sales@peachpayments.com to set up a merchant account for your company/website.
 Peach Payments will assist you in the application process with the respective banks. Please note that the merchant account application process may take up to 4 weeks depending on the bank. Get in touch as soon as possible to avoid delays going live.
 
@@ -137,7 +137,7 @@ MASTER
 	Number: 5506750000000149
 	Peach System Status: “Authorized”
 
-= Live Mode ↑ Back to top =
+= Live Mode =
 1. After testing the gateway with the Peach Payment test cards, go back to “WooCommerce >> Settings” and select the “Checkout” tab.
 2. Set the “Transaction Mode” to “Live”.
 3. Replace your TEST access credentials in the “Sender ID” and “Channel ID” fields with your LIVE access credentials.
@@ -153,9 +153,9 @@ This might be caused by the fact that you are using an older version of the Peac
 = Visa card, Master card, American Express or other card not working. =
 If a particular card brand is not working, make sure that you have enabled it using the “Supported Cards” field in the WooCommerce Checkout Settings for Peach Payments.
 = Where can I report bugs or contribute to the project? =
-Bugs can be reported either in our support account or preferably on the WooCommerce Peach Payments Gateway [GitHub repository](https://github.com/lightspeeddevelopment/lsx-projects).
+Bugs can be reported either in our support account or preferably on the WooCommerce Peach Payments Gateway [GitHub repository](https://github.com/lightspeeddevelopment/woocommerce-gateway-peach-payments).
 = The WooCommerce Peach Payments Gateway plugin is awesome! Can I contribute? =
-Yes you can! Join in on our [GitHub repository](https://github.com/lightspeeddevelopment/lsx-projects)  🙂
+Yes you can! Join in on our [GitHub repository](https://github.com/lightspeeddevelopment/woocommerce-gateway-peach-payments)  🙂
 = What are the server requirements for running the LSX Theme and the WooCommerce Peach Payments Gateway plugin? =
 Your WordPress website needs to be running PHP version 7.0 or higher in order to make use of the LSX theme and related plugins.
 = I need custom functionality for this plugin. Can you build it? =
