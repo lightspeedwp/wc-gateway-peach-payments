@@ -11,7 +11,7 @@ License: GPLv3
 A payment gateway integration between WooCommerce and Peach Payments.
 
 == Description ==
-The Peach Payments extension for WooCommerce is a South African payment gateway that allows merchants to access to all relevant payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in the emerging markets.
+The Peach Payments extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets.
 
 - Secure card storage
 - Fully supports WooCommerce Subscriptions (separate purchase)
@@ -26,7 +26,7 @@ A WooCommerce store with “South African Rand ( R )” as the currency.
 
 = Sign up with Peach Payments ↑ Back to top =
 Contact Peach Payments at sales@peachpayments.com to set up a merchant account for your company/website.
-Peach Payments will assist you in the application process with the respective banks. Please note that the merchant account application process may take up to 4 weeks depending on the bank. Get in touch as soon as possible to avoid delays in going live.
+Peach Payments will assist you in the application process with the respective banks. Please note that the merchant account application process may take up to 4 weeks depending on the bank. Get in touch as soon as possible to avoid delays going live.
 
 = It's Free, and always will be =
 We’re firm believers in open source – that’s why we’re releasing the WooCommerce Peach Payments Gateway plugin for free, forever. 
@@ -47,10 +47,10 @@ The WooCommerce Peach Payments Gateway plugin is actively developed with new fea
 Upon setting up your merchant account with Peach Payments you will receive TEST and LIVE access credentials. You will need to insert these details on the Peach Payments gateway settings page under “WooCommerce settings”. Use your TEST credentials for testing prior to going live.
 
 == Testing the payment gateway ==
-Go to WooCommerce > Settings > Payments > Peach Payments.
-Change the “Transaction Mode” to “Integrator Test” mode.
-Enter Peach Payments TEST access credentials into the “Sender ID”, “Channel ID” and “3DSecure Channel ID” fields. You would have received these after registering with Peach.
-Save changes.
+1. Go to WooCommerce > Settings > Payments > Peach Payments.
+2. Change the “Transaction Mode” to “Integrator Test” mode.
+3. Enter Peach Payments TEST access credentials into the “Sender ID”, “Channel ID” and “3DSecure Channel ID” fields. You would have received these after registering with Peach.
+4. Save changes.
 
 == Sandbox Testing ==
 Now test the payment gateway by purchasing a product on your website using the Peach Payment Test Cards (the Test Card numbers provided in this system can be used to test the various components of your integration).
@@ -138,10 +138,10 @@ MASTER
 	Peach System Status: “Authorized”
 
 = Live Mode ↑ Back to top =
-After testing the gateway with the Peach Payment test cards, go back to “WooCommerce >> Settings” and select the “Checkout” tab.
-Set the “Transaction Mode” to “Live”.
-Replace your TEST access credentials in the “Sender ID” and “Channel ID” fields with your LIVE access credentials.
-Click “Save changes”.
+1. After testing the gateway with the Peach Payment test cards, go back to “WooCommerce >> Settings” and select the “Checkout” tab.
+2. Set the “Transaction Mode” to “Live”.
+3. Replace your TEST access credentials in the “Sender ID” and “Channel ID” fields with your LIVE access credentials.
+4. Click “Save changes”.
 
 == Frequently Asked Questions ==
 = What does this plugin do? =
