@@ -96,5 +96,8 @@ if ( ! class_exists( 'WooThemes_Updater' ) && ! function_exists( 'woothemes_upda
  * Prevent conflicts with older versions
  */
 if ( ! class_exists( 'WooThemes_Plugin_Updater' ) ) {
-	class WooThemes_Plugin_Updater { function init() {} }
+	class WooThemes_Plugin_Updater {
+		function init() {
+		}
+	}
 }

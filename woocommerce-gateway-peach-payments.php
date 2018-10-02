@@ -17,7 +17,7 @@
  * Required functions
  */
 if ( ! function_exists( 'woothemes_queue_update' ) )
-	require_once( 'woo-includes/woo-functions.php' );
+	require_once( 'woo-includes/class-woothemes-plugin-updater.php' );
 
 /**
  * Plugin updates

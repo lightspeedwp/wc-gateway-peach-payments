@@ -42,7 +42,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 			<p class="form-row form-row-wide test">
 
-				<?php if ( $credit_cards = get_user_meta( get_current_user_id(), '_peach_payment_id', false ) ) : ?>
+				<?php
+				if (
+					$credit_cards = get_user_meta( get_current_user_id(), '_peach_payment_id', false ) ) :
+				?>
 
 					<?php foreach ( $credit_cards as $i => $credit_card ) : ?>
 						<input type="radio" id="peach_card_<?php echo esc_attr( $i ); ?>" name="peach_payment_id" style="width:auto;" value="<?php echo esc_attr( $i ); ?>" />
@@ -78,7 +81,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 			try {
 				// Check if paying with registered payment method
-				if ( isset( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
+				if ( isset( $_POST['peach_payment_id'] ) || wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 
 					$payment_ids = get_user_meta( $this->get_customer_id( $order ), '_peach_payment_id', false );
 					$payment_id = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
@@ -102,12 +105,13 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						if ( 'NOK' == $response['PROCESSING.RESULT'] ) {
 							$order->update_status( 'failed', sprintf( e_( 'Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
-						} elseif ( $response['PROCESSING.RESULT'] == 'ACK' ) {
+						} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
 							$order->payment_complete();
 							$force_complete = false;
-							if ( sizeof( $order->get_items() ) > 0 ) {
+							if ( count( $order->get_items() ) > 0 ) {
 								foreach ( $order->get_items() as $item ) {
-									if ( $_product = $this->get_item_product( $item, $order ) ) {
+									if (
+										$_product = $this->get_item_product( $item, $order ) ) {
 										if ( $_product->is_downloadable() || $_product->is_virtual() ) {
 											$force_complete = true;
 										}
@@ -137,7 +141,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						'redirect' => $redirect_url,
 					);
 
-				} elseif ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'dontsave' ) ) {
+				} elseif ( isset( $_POST['peach_payment_id'] ) && ( 'dontsave' == $_POST['peach_payment_id'] ) ) {
 					throw new Exception( __( 'You need to store your payment method in order to purchase a subscription.', 'woocommerce-gateway-peach-payments' ) );
 				} else /*if ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'saveinfo' ) )*/ {
 					$subscription_request = array(
@@ -156,12 +160,12 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						'RECURRENCE.MODE'              => 'INITIAL',
 					);
 
-					if ( $this->transaction_mode == 'CONNECTOR_TEST' || 'LIVE' ) {
+					if ( 'CONNECTOR_TEST' == $this->transaction_mode || 'LIVE' ) {
 						$subscription_request['CRITERION.presentation.currency3D'] = 'ZAR';
-						$subscription_request['CRITERION.presentation.amount3D'] = $order->get_total();
+						$subscription_request['CRITERION.presentation.amount3D']   = $order->get_total();
 					}
 
-					if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {
+					if ( 'CONNECTOR_TEST' == $this->transaction_mode ) {
 						$subscription_request['CRITERION.USE_3D_SIMULATOR'] = 'false';
 					}
 
@@ -178,7 +182,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 					//token received - offload payment processing to copyandpay form
 					return array(
 						'result'   => 'success',
-						'redirect' => $order->get_checkout_payment_url( true )
+						'redirect' => $order->get_checkout_payment_url( true ),
 					);
 				}
 			} catch ( Exception $e ) {
@@ -222,7 +226,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 		if ( wcs_order_contains_renewal( $this->get_order_id( $order ) ) ) {
 			$payment_method_order_id = WC_Subscriptions_Renewal_Order::get_parent_order_id( $this->get_order_id( $order ) );
-			$payment_id = get_post_meta( $payment_method_order_id, '_peach_subscription_payment_method', true );
+			$payment_id              = get_post_meta( $payment_method_order_id, '_peach_subscription_payment_method', true );
 		} else {
 			$payment_id = get_post_meta( $this->get_order_id( $order ), '_peach_subscription_payment_method', true );
 		}
@@ -233,12 +237,14 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			$this->log( print_r( $result, true ) );
 			$order->update_status( 'failed' );
 			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order );
-		} elseif ( $result['PROCESSING.RESULT'] == 'NOK' ) {
+		} elseif ( 'NOK' == $result['PROCESSING.RESULT'] ) {
+			/* translators: %s: Scheduled Subscription Payment Failed */
 			$order->add_order_note( sprintf( __( 'Scheduled Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $result['PROCESSING.RETURN'] ) ) );
 			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order );
 			$order->update_status( 'failed' );
 			$this->log( print_r( $result, true ) );
-		} elseif ( $result['PROCESSING.RESULT'] == 'ACK' ) {
+		} elseif ( 'ACK' == $result['PROCESSING.RESULT'] ) {
+			/* translators: %s: Scheduled Subscription Payment Accepted */
 			$order->add_order_note( sprintf( __( 'Scheduled Subscription Payment Accepted: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $result['PROCESSING.RETURN'] ) ) );
 			$order->payment_complete();
 			WC_Subscriptions_Manager::process_subscription_payments_on_order( $order );
@@ -266,7 +272,8 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		$data = array();
 
 		$order_items = $order->get_items();
-		$product = $this->get_item_product( array_shift( $order_items ), $order );
+		$product     = $this->get_item_product( array_shift( $order_items ), $order );
+		/* translators: %s: Scheduled Subscription for */
 		$subscription_name = sprintf( __( 'Subscription for "%s"', 'woocommerce-gateway-peach-payments' ), $product->get_title() ) . ' ' . sprintf( __( '(Order %s)', 'woocommerce-gateway-peach-payments' ), $order->get_order_number() );
 
 		$payment_request = array(
@@ -284,7 +291,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			'FRONTEND.ENABLED'             => 'false',
 		);
 
-		if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {
+		if ( 'CONNECTOR_TEST' == $this->transaction_mode ) {
 			$payment_request['CRITERION.USE_3D_SIMULATOR'] = 'false';
 		}
 
@@ -311,7 +318,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		// Convert response string to array
 		$vars = explode( '&', $response['body'] );
 		foreach ( $vars as $key => $val ) {
-			$var = explode( '=', $val );
+			$var             = explode( '=', $val );
 			$data[ $var[0] ] = $var[1];
 		}
 
@@ -330,11 +337,11 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		$token = $_GET['token'];
 
 		$parsed_response = $this->get_token_status( $token );
-		$order_id = $parsed_response->transaction->identification->transactionid;
+		$order_id        = $parsed_response->transaction->identification->transactionid;
 
 		if ( function_exists( 'wcs_order_contains_subscription' ) && ( wcs_order_contains_subscription( $order_id ) || wcs_order_contains_renewal( $order_id ) ) ) {
 
-			$order = wc_get_order( $order_id );
+			$order                = wc_get_order( $order_id );
 			$current_order_status = $order->get_status();
 			//Make sure we do not re process any complete or processing orders.
 
@@ -349,7 +356,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				}
 
 				//handle failed registration
-				if ( $parsed_response->transaction->payment->code == 'CC.RG' && $parsed_response->transaction->processing->result == 'NOK' ) {
+				if ( 'CC.RG' == $parsed_response->transaction->payment->code && 'NOK' == $parsed_response->transaction->processing->result ) {
 					$error_message = __( 'Registration Failed: Card registration was not accepted - Peach Payments', 'woocommerce-gateway-peach-payments' );
 					$order->update_status( 'failed', $error_message );
 					$this->log( $error_message . ' ' . print_r( $parsed_response, true ) );
@@ -358,12 +365,12 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				}
 
 				//handle card registration, you have to register a card for subscriptions.
-				if ( $parsed_response->transaction->payment->code == 'CC.RG' ) {
+				if ( 'CC.RG' == $parsed_response->transaction->payment->code ) {
 
 					$this->add_customer( $parsed_response );
 
 					$initial_payment = $order->get_total( $order );
-					$payment_id = $parsed_response->transaction->identification->uniqueId;
+					$payment_id      = $parsed_response->transaction->identification->uniqueId;
 
 					if ( $initial_payment > 0 ) {
 
@@ -378,17 +385,19 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 						$redirect_url = $this->get_return_url( $order );
 
-						if ( $response['PROCESSING.RESULT'] == 'NOK' ) {
+						if ( 'NOK' == $response['PROCESSING.RESULT'] ) {
+							/* translators: %s: Payment Failed */
 							$order->update_status( 'failed', sprintf( __( 'Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$this->log( wc_clean( $response['PROCESSING.RETURN'] ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
-						} elseif ( $response['PROCESSING.RESULT'] == 'ACK' ) {
+						} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
 							$order->payment_complete();
 
 							$force_complete = false;
-							if ( sizeof( $order->get_items() ) > 0 ) {
+							if ( count( $order->get_items() ) > 0 ) {
 								foreach ( $order->get_items() as $item ) {
-									if ( $_product = $this->get_item_product( $item, $order ) ) {
+									if (
+										$_product = $this->get_item_product( $item, $order ) ) {
 										if ( $_product->is_downloadable() || $_product->is_virtual() ) {
 											$force_complete = true;
 										}
@@ -398,7 +407,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							if ( $force_complete ) {
 								$order->update_status( 'completed' );
 							}
-
+							/* translators: %s: Subscription Payment Completed */
 							$order->add_order_note( sprintf( __( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							update_post_meta( $this->get_order_id( $order ), '_peach_subscription_payment_method', $payment_id );
 							$this->save_subscription_meta( $this->get_order_id( $order ), $payment_id );
@@ -426,8 +435,8 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 					wp_safe_redirect( $this->get_return_url( $order ) );
 					exit;
 
-				} elseif ( $parsed_response->transaction->processing->result == 'NOK' ) {
-
+				} elseif ( 'NOK' == $parsed_response->transaction->processing->result ) {
+					/* translators: %s: Subscription Payment Failed */
 					$order->update_status( 'failed', sprintf( __( 'Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), $parsed_response->transaction->processing->return->message ) );
 					$this->log( print_r( $parsed_response->transaction->processing->return, true ) );
 					wp_safe_redirect( $this->get_return_url( $order ) );
@@ -455,7 +464,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 			$order = wc_get_order( $order_id );
 
-			$payment_token = get_post_meta( $order_id, '_peach_payment_token', true );
+			$payment_token     = get_post_meta( $order_id, '_peach_payment_token', true );
 			$merchant_endpoint = add_query_arg( 'wc-api', 'WC_Peach_Payments_Subscriptions', home_url( '/' ) );
 
 			$supported_cards = implode( ' ', $this->cards );
@@ -499,10 +508,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 		try {
 			// Check if paying with registered payment method
-			if ( isset( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
+			if ( isset( $_POST['peach_payment_id'] ) || wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 
 				$payment_ids = get_user_meta( $this->get_customer_id( $original_order ), '_peach_payment_id', false );
-				$payment_id = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
+				$payment_id  = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
 
 				//throw exception if payment method does not exist
 				if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
@@ -510,7 +519,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 				} else {
 					update_post_meta( $this->get_order_id( $original_order ), '_peach_subscription_payment_method', $payment_id );
 				}
-			} elseif ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'saveinfo' ) ) {
+			} elseif ( isset( $_POST['peach_payment_id'] ) && ( 'saveinfo' == $_POST['peach_payment_id'] ) ) {
 					$subscription_request = array(
 						'IDENTIFICATION.TRANSACTIONID' => $this->get_order_id( $original_order ),
 						'IDENTIFICATION.SHOPPERID'     => $this->get_customer_id( $original_order ),
@@ -531,11 +540,11 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						'RECURRENCE.MODE'              => 'INITAL',
 					);
 
-				if ( $this->transaction_mode == 'CONNECTOR_TEST' || 'LIVE' ) {
+				if ( 'CONNECTOR_TEST' == $this->transaction_mode || 'LIVE' ) {
 					$payment_request['CRITERION.presentation.currency3D'] = 'ZAR';
-					$payment_request['CRITERION.presentation.amount3D'] = '1.0';
+					$payment_request['CRITERION.presentation.amount3D']   = '1.0';
 				}
-				if ( $this->transaction_mode == 'CONNECTOR_TEST' ) {
+				if ( 'CONNECTOR_TEST' == $this->transaction_mode ) {
 					$payment_request['CRITERION.USE_3D_SIMULATOR'] = 'false';
 				}
 
