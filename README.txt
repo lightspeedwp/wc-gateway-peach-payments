@@ -1,6 +1,6 @@
 === WooCommerce Peach Payments Gateway ===
 Contributors: feedmymedia
-Tags: LSX Theme, portfolio, projects, project portfolio, project grid
+Tags: LSX Theme, woocommerce, payments, credit card, payment request
 Donate link: https://www.lsdev.biz/
 Requires at least: 3.8
 Tested up to: 4.3.1
@@ -162,9 +162,5 @@ Your WordPress website needs to be running PHP version 7.0 or higher in order to
 Yes. Just send us a message via [contact form](https://www.lsdev.biz/contact/) with precise information about what you require.
 
 == Screenshots ==
-
-== Changelog ==
-Change Log
-
-== Upgrade Notice ==
-Upgrade Notice
+1. Admin Settings Area
+2. Checkout page
