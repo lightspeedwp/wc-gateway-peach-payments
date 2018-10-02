@@ -16,15 +16,15 @@
 /**
  * Required functions
  */
-if ( ! function_exists( 'woothemes_queue_update' ) )
-	require_once( 'woo-includes/class-woothemes-plugin-updater.php' );
+// if ( ! function_exists( 'woothemes_queue_update' ) )
+// 	require_once( 'woo-includes/class-woothemes-plugin-updater.php' );
 
-/**
- * Plugin updates
- */
-woothemes_queue_update( plugin_basename( __FILE__ ), 'e875781563c998b4e0cb0e47cd4b7b9a', '439020' );
+// /**
+//  * Plugin updates
+//  */
+// woothemes_queue_update( plugin_basename( __FILE__ ), 'e875781563c998b4e0cb0e47cd4b7b9a', '439020' );
 
-add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
+// add_action( 'plugins_loaded', 'woocommerce_peach_payments_init', 0 );
 
 /**
  * Initialize the gateway.
