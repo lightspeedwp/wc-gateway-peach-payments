@@ -49,7 +49,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 					<?php foreach ( $credit_cards as $i => $credit_card ) : ?>
 						<input type="radio" id="peach_card_<?php echo esc_attr( $i ); ?>" name="peach_payment_id" style="width:auto;" value="<?php echo esc_attr( $i ); ?>" />
-						<label style="display:inline;" for="peach_card_<?php echo esc_attr( $i ); ?>"><?php echo wp_kses_post( get_card_brand_image( $credit_card['brand'] ) ); ?> <?php echo '**** **** **** ' . esc_attr( $credit_card['active_card'] ); ?> (<?php echo esc_attr( $credit_card['exp_month'] ) . '/' . esc_attr( $credit_card['exp_year'] ); ?>)</label><br />
+						<label style="display:inline;" for="peach_card_<?php echo esc_attr( $i ); ?>"><?php echo esc_html( get_card_brand_image( $credit_card['brand'] ) ); ?> <?php echo '**** **** **** ' . esc_attr( $credit_card['active_card'] ); ?> (<?php echo esc_attr( $credit_card['exp_month'] ) . '/' . esc_attr( $credit_card['exp_year'] ); ?>)</label><br />
 					<?php endforeach; ?>
 
 					<br /> <a class="button" style="float:right;" href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ); ?>#saved-cards"><?php esc_html_e( 'Manage cards', 'woocommerce-gateway-peach-payments' ); ?></a>
