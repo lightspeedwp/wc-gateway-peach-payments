@@ -429,8 +429,9 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 					exit;
 				}
 
-				if ( ! empty( $parsed_response->errorMessage ) ) {
-					$this->log( $parsed_response->errorMessage );
+				$error_message_index = 'errorMessage';
+				if ( ! empty( $parsed_response->$error_message_index ) ) {
+					$this->log( $parsed_response->$error_message_index );
 					//$order->update_status('failed', sprintf(__('Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments'), $parsed_response->errorMessage ) );
 					wp_safe_redirect( $this->get_return_url( $order ) );
 					exit;
