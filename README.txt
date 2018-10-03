@@ -32,7 +32,7 @@ Peach Payments will assist you in the application process with the respective ba
 We’re firm believers in open source – that’s why we’re releasing the WooCommerce Peach Payments Gateway plugin for free, forever. 
 
 = Support =
-We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/).
+We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/product/woocommerce-peach-payments/).
 
 = Actively Developed =
 The WooCommerce Peach Payments Gateway plugin is actively developed with new features and exciting enhancements all the time. Keep track on the WooCommerce Peach Payments Gateway GitHub repository. Report any bugs via github issues.
