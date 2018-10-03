@@ -1,7 +1,7 @@
 *** WooCommerce Peach Payments Gateway Changelog ***
 
-2018.10.01 - version 1.1.5
- * Uploaded plugin to WordPress.org
+2018.10.03 - version 1.2.0
+ * Dev - Refactored code to WordPress Guidelines.
 
 2018.10.01 - version 1.1.4
  * Fix - Removed the hard coded description when not using card storage

@@ -134,6 +134,10 @@
 	width: 100%;
 }
 
+#add_payment_method #payment ul.payment_methods li.wc_payment_method input[type=radio]:first-child:checked + label:before, .woocommerce-cart #payment ul.payment_methods li.wc_payment_method input[type=radio]:first-child:checked + label:before, .woocommerce-checkout #payment ul.payment_methods li.wc_payment_method input[type=radio]:first-child:checked + label:before {
+	font-family: FontAwesome;
+}
+
 /** Response HTML */
 .woocommerce-order-pay iframe#cnpIframe {
 	display: block !important;
