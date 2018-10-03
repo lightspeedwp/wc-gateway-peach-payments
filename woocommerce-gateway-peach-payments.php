@@ -93,7 +93,7 @@ function woocommerce_peach_payments_init() {
 				<tbody>
 					<?php foreach ( $credit_cards as $i => $credit_card ) : ?>
 					<tr>
-						<td><?php echo esc_html( get_card_brand_image( $credit_card['brand'] ) ); ?></td>
+						<td><?php echo wp_kses_post( get_card_brand_image( $credit_card['brand'] ) ); ?></td>
 						<td><?php echo '**** **** **** ' . esc_html( $credit_card['active_card'] ); ?></td>
 						<td><?php echo esc_html( $credit_card['exp_month'] ) . '/' . esc_html( $credit_card['exp_year'] ); ?></td>
 						<td>
