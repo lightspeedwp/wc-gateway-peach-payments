@@ -47,7 +47,7 @@ function woocommerce_peach_payments_init() {
 			return;
 		}
 
-		if ( ! is_user_logged_in() || ! wp_verify_nonce( $_POST['_wpnonce'], 'peach_del_card' ) ) {
+		if ( ! is_user_logged_in() && ! wp_verify_nonce( $_POST['_wpnonce'], 'peach_del_card' ) ) {
 			wp_die( esc_html_e( 'Unable to verify deletion, please try again', 'woocommerce-gateway-peach-payments' ) );
 		}
 

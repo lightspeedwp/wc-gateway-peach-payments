@@ -41,7 +41,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 		<fieldset>
 
 		<?php if ( is_user_logged_in() && 'yes' == $this->card_storage ) : ?>
-			<p class="form-row form-row-wide test">
+			<p class="form-row form-row-wide">
 
 				<?php
 				if (
@@ -84,7 +84,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 			try {
 				// Check if paying with registered payment method
-				if ( isset( $_POST['peach_payment_id'] ) || wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
+				if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 
 					$payment_ids = get_user_meta( $this->get_customer_id( $order ), '_peach_payment_id', false );
 					$payment_id = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
