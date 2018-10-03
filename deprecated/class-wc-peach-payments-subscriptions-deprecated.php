@@ -143,7 +143,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 		global $woocommerce;
 		try {
 			// Check if paying with registered payment method
-			if ( isset( $_POST['peach_payment_id'] ) || wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
+			if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 				$payment_ids = get_user_meta( $this->get_customer_id( $original_order ), '_peach_payment_id', false );
 				$payment_id  = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
 
@@ -153,7 +153,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 				} else {
 					update_post_meta( $this->get_order_id( $original_order ), '_peach_subscription_payment_method', $payment_id );
 				}
-			} elseif ( isset( $_POST['peach_payment_id'] ) || wp_verify_nonce( $_POST['peach_payment_id'] ) && ( 'saveinfo' == $_POST['peach_payment_id'] ) ) {
+			} elseif ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && ( 'saveinfo' == $_POST['peach_payment_id'] ) ) {
 				$subscription_request = array(
 					'IDENTIFICATION.TRANSACTIONID' => $this->get_order_id( $original_order ),
 					'IDENTIFICATION.SHOPPERID'     => $this->get_customer_id( $original_order ),

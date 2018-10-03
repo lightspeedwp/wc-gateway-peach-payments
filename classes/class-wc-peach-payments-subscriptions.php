@@ -57,7 +57,8 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 				<?php endif; ?>
 
-				<input type="radio" id="saveinfo" name="peach_payment_id" style="width:auto;" value="saveinfo"/> <label style="display:inline;" for="saveinfo"><?php esc_html_e( 'Use a new credit card.', 'woocommerce-gateway-peach-payments' ); ?></label><br />
+				<input type="radio" id="saveinfo" name="peach_payment_id" style="width:auto;" value="saveinfo"/> <label style="display:inline;" for="saveinfo"><?php esc_html_e( 'Use a new credit card and store method for future use.', 'woocommerce-gateway-peach-payments' ); ?></label><br />
+				<input type="radio" id="dontsave" name="peach_payment_id" style="width:auto;" value="dontsave"/> <label style="display:inline;" for="dontsave"><?php esc_html_e( 'Use a new credit card without storing.', 'woocommerce-gateway-peach-payments' ); ?></label>
 
 			</p>
 			<div class="clear"></div>
@@ -511,7 +512,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 		try {
 			// Check if paying with registered payment method
-			if ( isset( $_POST['peach_payment_id'] ) || wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
+			if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
 
 				$payment_ids = get_user_meta( $this->get_customer_id( $original_order ), '_peach_payment_id', false );
 				$payment_id  = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
