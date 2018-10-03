@@ -567,7 +567,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			$status = $_GET['registered_payment'];
 			$this->process_registered_payment_status( $order_id, $status );
 		} else {
-			echo esc_attr( $this->generate_peach_payments_form( $order_id ) );
+			echo esc_html( $this->generate_peach_payments_form( $order_id ) );
 		}
 
 	}
