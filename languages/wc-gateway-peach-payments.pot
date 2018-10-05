@@ -1,0 +1,249 @@
+# Copyright (C) 2018 wc-gateway-peach-payments
+# This file is distributed under the same license as the wc-gateway-peach-payments package.
+msgid ""
+msgstr ""
+"Project-Id-Version: wc-gateway-peach-payments\n"
+"Report-Msgid-Bugs-To: https://github.com/lightspeeddevelopment/wc-gateway-peach-payments/issues\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Language-Team: LightSpeed <webmaster@lsdev.biz>\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: classes/class-wc-peach-payments-subscriptions.php:56, classes/class-wc-peach-payments.php:411
+msgid "Manage cards"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:60, classes/class-wc-peach-payments.php:415
+msgid "Use a new credit card and store method for future use."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:61, classes/class-wc-peach-payments.php:416
+msgid "Use a new credit card without storing."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:94, classes/class-wc-peach-payments-subscriptions.php:522, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:152
+msgid "Invalid"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:148
+msgid "You need to store your payment method in order to purchase a subscription."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:192, classes/class-wc-peach-payments-subscriptions.php:571, classes/class-wc-peach-payments.php:549, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:201
+msgid "Error:"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:217, classes/class-wc-peach-payments-subscriptions.php:239, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:60
+msgid "Scheduled Subscription Payment Failed: Couldn't connect to gateway server - Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:221, classes/class-wc-peach-payments-subscriptions.php:245, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:64
+msgid "Scheduled Subscription Payment Failed: Payment Response is \"%s\" - Peach Payments."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:251, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:68
+msgid "Scheduled Subscription Payment Accepted: Payment Response is \"%s\" - Peach Payments."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:255, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:71
+msgid "Scheduled Subscription Payment Failed: An unknown error has occured - Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:280, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:95
+msgid "Subscription for \"%s\""
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:280, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:95
+msgid "(Order %s)"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:312, classes/class-wc-peach-payments-subscriptions.php:313, classes/class-wc-peach-payments.php:744, classes/class-wc-peach-payments.php:794, classes/class-wc-peach-payments.php:795, classes/class-wc-peach-payments.php:850, classes/class-wc-peach-payments.php:851, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:120
+msgid "There was a problem connecting to the payment gateway."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:317, classes/class-wc-peach-payments-subscriptions.php:318, classes/class-wc-peach-payments.php:747, classes/class-wc-peach-payments.php:799, classes/class-wc-peach-payments.php:800, classes/class-wc-peach-payments.php:855, classes/class-wc-peach-payments.php:856, deprecated/class-wc-peach-payments-subscriptions-deprecated.php:122
+msgid "Empty response."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:354
+msgid "Subscription Payment Failed: Couldn't connect to gateway server - Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:363, classes/class-wc-peach-payments.php:624
+msgid "Registration Failed: Card registration was not accepted - Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:393, classes/class-wc-peach-payments-subscriptions.php:438, classes/class-wc-peach-payments-subscriptions.php:444
+msgid "Subscription Payment Failed: Payment Response is \"%s\" - Peach Payments."
+msgstr ""
+
+#: classes/class-wc-peach-payments-subscriptions.php:414
+msgid "Subscription Payment Completed: Payment Response is \"%s\" - Peach Payments."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:99, classes/class-wc-peach-payments.php:435
+msgid "Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:180
+msgid "Enable/Disable"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:181
+msgid "Enable Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:188
+msgid "Card Storage"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:189
+msgid "Enable Card Storage"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:191
+msgid "Allow customers to store cards against their account. Required for subscriptions."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:196
+msgid "Title"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:198
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:199
+msgid "Credit Card"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:203
+msgid "Description"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:205
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:210
+msgid "Supported Cards"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:212
+msgid "Choose the cards you wish to accept."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:225
+msgid "User Login"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:227
+msgid "This is the API username generated within the Peach Payments Commerce gateway."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:232
+msgid "User Password"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:234
+msgid "This is the API user password generated within the Peach Payments Commerce gateway."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:239, classes/class-wc-peach-payments.php:241
+msgid "Sender ID"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:246, classes/class-wc-peach-payments.php:248
+msgid "Channel ID"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:253
+msgid "3DSecure Channel ID"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:255
+msgid "If there is no specific 3DSecure Channel ID then use Channel ID here again."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:260
+msgid "Transaction Mode"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:262
+msgid "Set your gateway to live when you are ready."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:271
+msgid "Debug"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:272
+msgid "On / Off"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:274
+msgid "Records the specifics of the transactions to the the WC Log"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:445
+msgid "Gateway Disabled"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:445
+msgid "Choose South African Rands as your store currency in <a href=\"%s\">General Options</a> to enable the Peach Payments Gateway."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:469
+msgid "Invalid Payment Method"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:615, classes/class-wc-peach-payments.php:642
+msgid "Payment Failed: Couldn't connect to gateway server - Peach Payments"
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:652, classes/class-wc-peach-payments.php:686, classes/class-wc-peach-payments.php:693, classes/class-wc-peach-payments.php:873
+msgid "Payment Failed: Payment Response is \"%s\" - Peach Payments."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:658, classes/class-wc-peach-payments.php:880
+msgid "Payment Completed: Payment Response is \"%s\" - Peach Payments."
+msgstr ""
+
+#: classes/class-wc-peach-payments.php:884
+msgid "Payment Failed: The was an error contacting the API."
+msgstr ""
+
+#: wc-gateway-peach-payments.php:56
+msgid "Unable to verify deletion, please try again"
+msgstr ""
+
+#: wc-gateway-peach-payments.php:64
+msgid "Card deleted."
+msgstr ""
+
+#: wc-gateway-peach-payments.php:88
+msgid "Saved cards"
+msgstr ""
+
+#: wc-gateway-peach-payments.php:92
+msgid "Brand"
+msgstr ""
+
+#: wc-gateway-peach-payments.php:93
+msgid "Card Number"
+msgstr ""
+
+#: wc-gateway-peach-payments.php:94
+msgid "Expires"
+msgstr ""
+
+#: wc-gateway-peach-payments.php:108
+msgid "Delete card"
+msgstr ""
