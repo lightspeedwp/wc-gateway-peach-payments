@@ -1,4 +1,4 @@
-=== WooCommerce Peach Payments Gateway ===
+=== WC Peach Payments Gateway ===
 Contributors: feedmymedia
 Tags: LSX Theme, woocommerce, payments, credit card, payment request
 Donate link: https://www.lsdev.biz/

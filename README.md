@@ -1,4 +1,4 @@
-### WooCommerce Peach Payments Gateway
+### WC Peach Payments Gateway
 
 ```
 Contributors: feedmymedia
