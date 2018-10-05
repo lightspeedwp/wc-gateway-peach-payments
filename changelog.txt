@@ -1,4 +1,4 @@
-*** WooCommerce Peach Payments Gateway Changelog ***
+*** WC Peach Payments Gateway Changelog ***
 
 2018.10.03 - version 1.2.0
  * Dev - Refactored code to WordPress Guidelines.

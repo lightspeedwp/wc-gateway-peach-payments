@@ -29,13 +29,13 @@ Contact Peach Payments at sales@peachpayments.com to set up a merchant account f
 Peach Payments will assist you in the application process with the respective banks. Please note that the merchant account application process may take up to 4 weeks depending on the bank. Get in touch as soon as possible to avoid delays going live.
 
 = It's Free, and always will be =
-We’re firm believers in open source – that’s why we’re releasing the WooCommerce Peach Payments Gateway plugin for free, forever. 
+We’re firm believers in open source – that’s why we’re releasing the WC Peach Payments Gateway plugin for free, forever.
 
 = Support =
 We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/).
 
 = Actively Developed =
-The WooCommerce Peach Payments Gateway plugin is actively developed with new features and exciting enhancements all the time. Keep track on the WooCommerce Peach Payments Gateway GitHub repository. Report any bugs via github issues.
+The WC Peach Payments Gateway plugin is actively developed with new features and exciting enhancements all the time. Keep track on the WC Peach Payments Gateway GitHub repository. Report any bugs via github issues.
 
 == Installation ==
 1. Log in to your WordPress website (www.yourwebsiteurl.com/wp-admin).
@@ -153,10 +153,10 @@ This might be caused by the fact that you are using an older version of the Peac
 = Visa card, Master card, American Express or other card not working. =
 If a particular card brand is not working, make sure that you have enabled it using the “Supported Cards” field in the WooCommerce Checkout Settings for Peach Payments.
 = Where can I report bugs or contribute to the project? =
-Bugs can be reported either in our support account or preferably on the WooCommerce Peach Payments Gateway [GitHub repository](https://github.com/lightspeeddevelopment/wc-gateway-peach-payments).
-= The WooCommerce Peach Payments Gateway plugin is awesome! Can I contribute? =
+Bugs can be reported either in our support account or preferably on the WC Peach Payments Gateway [GitHub repository](https://github.com/lightspeeddevelopment/wc-gateway-peach-payments).
+= The WC Peach Payments Gateway plugin is awesome! Can I contribute? =
 Yes you can! Join in on our [GitHub repository](https://github.com/lightspeeddevelopment/wc-gateway-peach-payments)  🙂
-= What are the server requirements for running the LSX Theme and the WooCommerce Peach Payments Gateway plugin? =
+= What are the server requirements for running the LSX Theme and the WC Peach Payments Gateway plugin? =
 Your WordPress website needs to be running PHP version 7.0 or higher in order to make use of the LSX theme and related plugins.
 = I need custom functionality for this plugin. Can you build it? =
 Yes. Just send us a message via [contact form](https://www.lsdev.biz/contact/) with precise information about what you require.
