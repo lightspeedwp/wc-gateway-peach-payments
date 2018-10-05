@@ -92,6 +92,10 @@ msgstr ""
 msgid "Peach Payments"
 msgstr ""
 
+#: classes/class-wc-peach-payments.php:123
+msgid "Proceed to payment"
+msgstr ""
+
 #: classes/class-wc-peach-payments.php:180
 msgid "Enable/Disable"
 msgstr ""
