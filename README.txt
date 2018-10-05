@@ -11,7 +11,7 @@ License: GPLv3
 A payment gateway integration between WooCommerce and Peach Payments.
 
 == Description ==
-The [Peach Payments](https://www.lsdev.biz/product/woocommerce-peach-payments/) extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets.
+The [Peach Payments](https://www.lsdev.biz/product/wc-peach-payments/) extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets.
 
 - Secure card storage
 - Fully supports WooCommerce Subscriptions (separate purchase)
@@ -153,9 +153,9 @@ This might be caused by the fact that you are using an older version of the Peac
 = Visa card, Master card, American Express or other card not working. =
 If a particular card brand is not working, make sure that you have enabled it using the “Supported Cards” field in the WooCommerce Checkout Settings for Peach Payments.
 = Where can I report bugs or contribute to the project? =
-Bugs can be reported either in our support account or preferably on the WooCommerce Peach Payments Gateway [GitHub repository](https://github.com/lightspeeddevelopment/woocommerce-gateway-peach-payments).
+Bugs can be reported either in our support account or preferably on the WooCommerce Peach Payments Gateway [GitHub repository](https://github.com/lightspeeddevelopment/wc-gateway-peach-payments).
 = The WooCommerce Peach Payments Gateway plugin is awesome! Can I contribute? =
-Yes you can! Join in on our [GitHub repository](https://github.com/lightspeeddevelopment/woocommerce-gateway-peach-payments)  🙂
+Yes you can! Join in on our [GitHub repository](https://github.com/lightspeeddevelopment/wc-gateway-peach-payments)  🙂
 = What are the server requirements for running the LSX Theme and the WooCommerce Peach Payments Gateway plugin? =
 Your WordPress website needs to be running PHP version 7.0 or higher in order to make use of the LSX theme and related plugins.
 = I need custom functionality for this plugin. Can you build it? =

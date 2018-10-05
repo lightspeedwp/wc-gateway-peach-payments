@@ -57,18 +57,18 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 		$product_id = 0;
 
 		if ( is_wp_error( $result ) ) {
-			$order->add_order_note( __( 'Scheduled Subscription Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments' ) );
+			$order->add_order_note( __( 'Scheduled Subscription Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'wc-gateway-peach-payments' ) );
 			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
 		} elseif ( 'NOK' == $result['PROCESSING.RESULT'] ) {
 			/* translators: %s: Scheduled Subscription Payment Failed */
-			$order->add_order_note( sprintf( __( 'Scheduled Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), woocommerce_clean( $result['PROCESSING.RETURN'] ) ) );
+			$order->add_order_note( sprintf( __( 'Scheduled Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), woocommerce_clean( $result['PROCESSING.RETURN'] ) ) );
 			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
 		} elseif ( 'ACK' == $result['PROCESSING.RESULT'] ) {
 			/* translators: %s: Scheduled Subscription Payment Accepted */
-			$order->add_order_note( sprintf( __( 'Scheduled Subscription Payment Accepted: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), woocommerce_clean( $result['PROCESSING.RETURN'] ) ) );
+			$order->add_order_note( sprintf( __( 'Scheduled Subscription Payment Accepted: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), woocommerce_clean( $result['PROCESSING.RETURN'] ) ) );
 			WC_Subscriptions_Manager::process_subscription_payments_on_order( $order );
 		} else {
-			$order->add_order_note( __( 'Scheduled Subscription Payment Failed: An unknown error has occured - Peach Payments', 'woocommerce-gateway-peach-payments' ) );
+			$order->add_order_note( __( 'Scheduled Subscription Payment Failed: An unknown error has occured - Peach Payments', 'wc-gateway-peach-payments' ) );
 			WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order, $product_id );
 		}
 
@@ -92,7 +92,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 		$order_items = $order->get_items();
 		$product     = $this->get_item_product( array_shift( $order_items ), $order );
 		/* translators: %s: Subscription for */
-		$subscription_name = sprintf( __( 'Subscription for "%s"', 'woocommerce-gateway-peach-payments' ), $product->get_title() ) . ' ' . sprintf( __( '(Order %s)', 'woocommerce-gateway-peach-payments' ), $order->get_order_number() );
+		$subscription_name = sprintf( __( 'Subscription for "%s"', 'wc-gateway-peach-payments' ), $product->get_title() ) . ' ' . sprintf( __( '(Order %s)', 'wc-gateway-peach-payments' ), $order->get_order_number() );
 
 		$payment_request = array(
 			'PAYMENT.CODE'                 => 'CC.DB',
@@ -117,9 +117,9 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 			'user-agent' => 'WooCommerce ' . $woocommerce->version,
 		));
 		if ( is_wp_error( $response ) )
-			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'woocommerce-gateway-peach-payments' ) );
+			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'wc-gateway-peach-payments' ) );
 		if ( empty( $response['body'] ) )
-			return new WP_Error( 'peach_error', __( 'Empty response.', 'woocommerce-gateway-peach-payments' ) );
+			return new WP_Error( 'peach_error', __( 'Empty response.', 'wc-gateway-peach-payments' ) );
 		// Convert response string to array
 		$vars = explode( '&', $response['body'] );
 		foreach ( $vars as $key => $val ) {
@@ -149,7 +149,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 
 				//throw exception if payment method does not exist
 				if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
-					throw new Exception( __( 'Invalid', 'woocommerce-gateway-peach-payments' ) );
+					throw new Exception( __( 'Invalid', 'wc-gateway-peach-payments' ) );
 				} else {
 					update_post_meta( $this->get_order_id( $original_order ), '_peach_subscription_payment_method', $payment_id );
 				}
@@ -198,7 +198,7 @@ class WC_Peach_Payments_Subscriptions_Deprecated extends WC_Peach_Payments_Subsc
 			}
 		} catch ( Exception $e ) {
 
-			wc_add_notice( __( 'Error:', 'woocommerce-gateway-peach-payments' ) . ' "' . $e->getMessage() . '"', 'error' );
+			wc_add_notice( __( 'Error:', 'wc-gateway-peach-payments' ) . ' "' . $e->getMessage() . '"', 'error' );
 			return;
 		}
 	}

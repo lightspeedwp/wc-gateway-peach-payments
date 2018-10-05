@@ -96,7 +96,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 		$this->id           = 'peach-payments';
-		$this->method_title = __( 'Peach Payments', 'woocommerce-gateway-peach-payments' );
+		$this->method_title = __( 'Peach Payments', 'wc-gateway-peach-payments' );
 		$this->icon         = '';
 		$this->has_fields   = true;
 		$this->supports     = array(
@@ -177,39 +177,39 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	function init_form_fields() {
 		$this->form_fields = array(
 			'enabled'          => array(
-				'title'       => __( 'Enable/Disable', 'woocommerce-gateway-peach-payments' ),
-				'label'       => __( 'Enable Peach Payments', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Enable/Disable', 'wc-gateway-peach-payments' ),
+				'label'       => __( 'Enable Peach Payments', 'wc-gateway-peach-payments' ),
 				'type'        => 'checkbox',
 				'description' => '',
 				'default'     => 'no',
 			),
 
 			'card_storage'     => array(
-				'title'       => __( 'Card Storage', 'woocommerce-gateway-peach-payments' ),
-				'label'       => __( 'Enable Card Storage', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Card Storage', 'wc-gateway-peach-payments' ),
+				'label'       => __( 'Enable Card Storage', 'wc-gateway-peach-payments' ),
 				'type'        => 'checkbox',
-				'description' => __( 'Allow customers to store cards against their account. Required for subscriptions.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'Allow customers to store cards against their account. Required for subscriptions.', 'wc-gateway-peach-payments' ),
 				'default'     => 'yes',
 			),
 
 			'title'            => array(
-				'title'       => __( 'Title', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Title', 'wc-gateway-peach-payments' ),
 				'type'        => 'text',
-				'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce-gateway-peach-payments' ),
-				'default'     => __( 'Credit Card', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'This controls the title which the user sees during checkout.', 'wc-gateway-peach-payments' ),
+				'default'     => __( 'Credit Card', 'wc-gateway-peach-payments' ),
 			),
 
 			'description'      => array(
-				'title'       => __( 'Description', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Description', 'wc-gateway-peach-payments' ),
 				'type'        => 'textarea',
-				'description' => __( 'This controls the description which the user sees during checkout.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'This controls the description which the user sees during checkout.', 'wc-gateway-peach-payments' ),
 				'default'     => 'Pay with your credit card via Peach Payments.',
 			),
 
 			'cards'            => array(
-				'title'       => __( 'Supported Cards', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Supported Cards', 'wc-gateway-peach-payments' ),
 				'type'        => 'multiselect',
-				'description' => __( 'Choose the cards you wish to accept.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'Choose the cards you wish to accept.', 'wc-gateway-peach-payments' ),
 				'options'     => array(
 					'VISA'   => 'VISA',
 					'MASTER' => 'Master Card',
@@ -222,44 +222,44 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			),
 
 			'username'         => array(
-				'title'       => __( 'User Login', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'User Login', 'wc-gateway-peach-payments' ),
 				'type'        => 'text',
-				'description' => __( 'This is the API username generated within the Peach Payments Commerce gateway.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'This is the API username generated within the Peach Payments Commerce gateway.', 'wc-gateway-peach-payments' ),
 				'default'     => '',
 			),
 
 			'password'         => array(
-				'title'       => __( 'User Password', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'User Password', 'wc-gateway-peach-payments' ),
 				'type'        => 'password',
-				'description' => __( 'This is the API user password generated within the Peach Payments Commerce gateway.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'This is the API user password generated within the Peach Payments Commerce gateway.', 'wc-gateway-peach-payments' ),
 				'default'     => '',
 			),
 
 			'sender'           => array(
-				'title'       => __( 'Sender ID', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Sender ID', 'wc-gateway-peach-payments' ),
 				'type'        => 'text',
-				'description' => __( 'Sender ID', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'Sender ID', 'wc-gateway-peach-payments' ),
 				'default'     => '',
 			),
 
 			'channel'          => array(
-				'title'       => __( 'Channel ID', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Channel ID', 'wc-gateway-peach-payments' ),
 				'type'        => 'text',
-				'description' => __( 'Channel ID', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'Channel ID', 'wc-gateway-peach-payments' ),
 				'default'     => '',
 			),
 
 			'channel_3ds'      => array(
-				'title'       => __( '3DSecure Channel ID', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( '3DSecure Channel ID', 'wc-gateway-peach-payments' ),
 				'type'        => 'text',
-				'description' => __( 'If there is no specific 3DSecure Channel ID then use Channel ID here again.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'If there is no specific 3DSecure Channel ID then use Channel ID here again.', 'wc-gateway-peach-payments' ),
 				'default'     => '',
 			),
 
 			'transaction_mode' => array(
-				'title'       => __( 'Transaction Mode', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Transaction Mode', 'wc-gateway-peach-payments' ),
 				'type'        => 'select',
-				'description' => __( 'Set your gateway to live when you are ready.', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'Set your gateway to live when you are ready.', 'wc-gateway-peach-payments' ),
 				'default'     => 'INTEGRATOR_TEST',
 				'options'     => array(
 					'INTEGRATOR_TEST' => 'Integrator Test',
@@ -268,10 +268,10 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 				),
 			),
 			'debug'            => array(
-				'title'       => __( 'Debug', 'woocommerce-gateway-peach-payments' ),
-				'label'       => __( 'On / Off', 'woocommerce-gateway-peach-payments' ),
+				'title'       => __( 'Debug', 'wc-gateway-peach-payments' ),
+				'label'       => __( 'On / Off', 'wc-gateway-peach-payments' ),
 				'type'        => 'checkbox',
-				'description' => __( 'Records the specifics of the transactions to the the WC Log', 'woocommerce-gateway-peach-payments' ),
+				'description' => __( 'Records the specifics of the transactions to the the WC Log', 'wc-gateway-peach-payments' ),
 				'default'     => 'no',
 			),
 		);
@@ -320,7 +320,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			if ( empty( self::$log ) ) {
 				self::$log = new WC_Logger();
 			}
-			self::$log->add( 'woocommerce-gateway-peach-payments', $message );
+			self::$log->add( 'wc-gateway-peach-payments', $message );
 		}
 	}
 
@@ -408,12 +408,12 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 							<label style="display:inline;" for="peach_card_<?php echo esc_attr( $i ); ?>"><?php echo wp_kses_post( get_card_brand_image( $credit_card['brand'] ) ); ?> <?php echo '**** **** **** ' . esc_attr( $credit_card['active_card'] ); ?> (<?php echo esc_attr( $credit_card['exp_month'] ) . '/' . esc_attr( $credit_card['exp_year'] ); ?>)</label><br />
 						<?php endforeach; ?>
 
-						<br /> <a class="button" style="float:right;" href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ); ?>#saved-cards"><?php esc_html_e( 'Manage cards', 'woocommerce-gateway-peach-payments' ); ?></a>
+						<br /> <a class="button" style="float:right;" href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) ); ?>#saved-cards"><?php esc_html_e( 'Manage cards', 'wc-gateway-peach-payments' ); ?></a>
 
 					<?php endif; ?>
 
-					<input type="radio" id="saveinfo" name="peach_payment_id" style="width:auto;" value="saveinfo"/> <label style="display:inline;" for="saveinfo"><?php esc_html_e( 'Use a new credit card and store method for future use.', 'woocommerce-gateway-peach-payments' ); ?></label><br />
-					<input type="radio" id="dontsave" name="peach_payment_id" style="width:auto;" value="dontsave"/> <label style="display:inline;" for="dontsave"><?php esc_html_e( 'Use a new credit card without storing.', 'woocommerce-gateway-peach-payments' ); ?></label>
+					<input type="radio" id="saveinfo" name="peach_payment_id" style="width:auto;" value="saveinfo"/> <label style="display:inline;" for="saveinfo"><?php esc_html_e( 'Use a new credit card and store method for future use.', 'wc-gateway-peach-payments' ); ?></label><br />
+					<input type="radio" id="dontsave" name="peach_payment_id" style="width:auto;" value="dontsave"/> <label style="display:inline;" for="dontsave"><?php esc_html_e( 'Use a new credit card without storing.', 'wc-gateway-peach-payments' ); ?></label>
 
 				</p>
 				<div class="clear"></div>
@@ -432,7 +432,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	 */
 	function admin_options() {
 		?>
-		<h3><?php esc_html_e( 'Peach Payments', 'woocommerce-gateway-peach-payments' ); ?></h3>
+		<h3><?php esc_html_e( 'Peach Payments', 'wc-gateway-peach-payments' ); ?></h3>
 
 		<?php if ( 'ZAR' == get_option( 'woocommerce_currency' ) ) { ?>
 			<table class="form-table">
@@ -442,7 +442,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			?>
 			</table><!--/.form-table-->
 		<?php } else { ?>
-			<div class="inline error"><p><strong><?php esc_html_e( 'Gateway Disabled', 'woocommerce-gateway-peach-payments' ); ?></strong> <?php /* translators: %s: store currency */ echo sprintf( esc_html_e( 'Choose South African Rands as your store currency in <a href="%s">General Options</a> to enable the Peach Payments Gateway.', 'woocommerce-gateway-peach-payments' ), esc_url( admin_url( '?page=woocommerce_settings&tab=general' ) ) ); ?></p></div>
+			<div class="inline error"><p><strong><?php esc_html_e( 'Gateway Disabled', 'wc-gateway-peach-payments' ); ?></strong> <?php /* translators: %s: store currency */ echo sprintf( esc_html_e( 'Choose South African Rands as your store currency in <a href="%s">General Options</a> to enable the Peach Payments Gateway.', 'wc-gateway-peach-payments' ), esc_url( admin_url( '?page=woocommerce_settings&tab=general' ) ) ); ?></p></div>
 		<?php
 }
 	}
@@ -466,7 +466,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 				//throw exception if payment method does not exist
 				if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
-					throw new Exception( __( 'Invalid Payment Method', 'woocommerce-gateway-peach-payments' ) );
+					throw new Exception( __( 'Invalid Payment Method', 'wc-gateway-peach-payments' ) );
 				}
 
 				$redirect_url = $this->execute_post_payment_request( $order, $order->get_total(), $payment_id );
@@ -546,7 +546,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 			}
 		} catch ( Exception $e ) {
-			$error_message = __( 'Error:', 'woocommerce-gateway-peach-payments' ) . ' "' . $e->getMessage() . '"';
+			$error_message = __( 'Error:', 'wc-gateway-peach-payments' ) . ' "' . $e->getMessage() . '"';
 			wc_add_notice( $error_message, 'error' );
 			$this->log( $error_message );
 			return;
@@ -612,7 +612,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			if ( 'complete' !== $current_order_status && 'processing' !== $current_order_status ) {
 
 				if ( is_wp_error( $parsed_response ) ) {
-					$error_message = __( 'Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments' );
+					$error_message = __( 'Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'wc-gateway-peach-payments' );
 					$order->update_status( 'failed', $error_message );
 					$this->log( $error_message . ' ' . print_r( $parsed_response, true ) );
 					wp_safe_redirect( $this->get_return_url( $order ) );
@@ -621,7 +621,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 				//handle failed registration
 				if ( 'CC.RG' == $parsed_response->transaction->payment->code && 'NOK' == $parsed_response->transaction->processing->result ) {
-					$error_message = __( 'Registration Failed: Card registration was not accepted - Peach Payments', 'woocommerce-gateway-peach-payments' );
+					$error_message = __( 'Registration Failed: Card registration was not accepted - Peach Payments', 'wc-gateway-peach-payments' );
 					$order->update_status( 'failed', $error_message );
 					$this->log( $error_message . ' ' . print_r( $parsed_response, true ) );
 					wp_safe_redirect( $this->get_return_url( $order ) );
@@ -639,7 +639,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 					$response = $this->execute_post_payment_request( $order, $initial_payment, $payment_id );
 
 					if ( is_wp_error( $response ) ) {
-						$order->update_status( 'failed', __( 'Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'woocommerce-gateway-peach-payments' ) );
+						$order->update_status( 'failed', __( 'Payment Failed: Couldn\'t connect to gateway server - Peach Payments', 'wc-gateway-peach-payments' ) );
 						$this->log( print_r( $response, true ) );
 						wp_safe_redirect( $this->get_return_url( $order ) );
 						exit;
@@ -649,13 +649,13 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 					if ( 'NOK' == $response['PROCESSING.RESULT'] ) {
 						/* translators: %s: Payment Failed */
-						$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
+						$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 						$this->log( wc_clean( $response['PROCESSING.RETURN'] ) );
 						$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 					} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
 						$order->payment_complete();
 						/* translators: %s: Payment Completed */
-						$order->add_order_note( sprintf( __( 'Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
+						$order->add_order_note( sprintf( __( 'Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 						$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 					}
 					wp_safe_redirect( $redirect_url );
@@ -683,14 +683,14 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 					$this->log( $parsed_response->$error_message_index );
 					if ( false !== $order ) {
 						/* translators: %s: Payment Failed */
-						$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), $parsed_response->$error_message_index ) );
+						$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), $parsed_response->$error_message_index ) );
 					}
 					wp_safe_redirect( $this->get_return_url( $order ) );
 					exit;
 
 				} elseif ( 'NOK' == $parsed_response->transaction->processing->result ) {
 					/* translators: %s: search term */
-					$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), $parsed_response->transaction->processing->return->message ) );
+					$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), $parsed_response->transaction->processing->return->message ) );
 					$this->log( print_r( $parsed_response->transaction->processing->return, true ) );
 					wp_safe_redirect( $this->get_return_url( $order ) );
 					exit;
@@ -741,10 +741,10 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		));
 
 		if ( is_wp_error( $response ) )
-			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'woocommerce-gateway-peach-payments' ) );
+			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'wc-gateway-peach-payments' ) );
 
 		if ( empty( $response['body'] ) )
-			return new WP_Error( 'peach_error', __( 'Empty response.', 'woocommerce-gateway-peach-payments' ) );
+			return new WP_Error( 'peach_error', __( 'Empty response.', 'wc-gateway-peach-payments' ) );
 
 		$parsed_response = json_decode( $response['body'] );
 
@@ -791,13 +791,13 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		}
 
 		if ( is_wp_error( $response ) ) {
-			$this->log( __( 'There was a problem connecting to the payment gateway.', 'woocommerce-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
-			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'woocommerce-gateway-peach-payments' ) );
+			$this->log( __( 'There was a problem connecting to the payment gateway.', 'wc-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
+			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'wc-gateway-peach-payments' ) );
 		}
 
 		if ( empty( $response['body'] ) ) {
-			$this->log( __( 'Empty response.', 'woocommerce-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
-			return new WP_Error( 'peach_error', __( 'Empty response.', 'woocommerce-gateway-peach-payments' ) );
+			$this->log( __( 'Empty response.', 'wc-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
+			return new WP_Error( 'peach_error', __( 'Empty response.', 'wc-gateway-peach-payments' ) );
 		}
 
 		$parsed_response = json_decode( $response['body'] );
@@ -847,13 +847,13 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		));
 
 		if ( is_wp_error( $response ) ) {
-			$this->log( __( 'There was a problem connecting to the payment gateway.', 'woocommerce-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
-			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'woocommerce-gateway-peach-payments' ) );
+			$this->log( __( 'There was a problem connecting to the payment gateway.', 'wc-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
+			return new WP_Error( 'peach_error', __( 'There was a problem connecting to the payment gateway.', 'wc-gateway-peach-payments' ) );
 		}
 
 		if ( empty( $response['body'] ) ) {
-			$this->log( __( 'Empty response.', 'woocommerce-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
-			return new WP_Error( 'peach_error', __( 'Empty response.', 'woocommerce-gateway-peach-payments' ) );
+			$this->log( __( 'Empty response.', 'wc-gateway-peach-payments' ) . ' ' . print_r( $response, true ) );
+			return new WP_Error( 'peach_error', __( 'Empty response.', 'wc-gateway-peach-payments' ) );
 		}
 
 		// Convert response string to array
@@ -870,18 +870,18 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			if ( 'NOK' == $data['PROCESSING.RESULT'] ) {
 				$this->log( wc_clean( $data['PROCESSING.RETURN'] ) );
 				/* translators: %s: Payment Response */
-				$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $data['PROCESSING.RETURN'] ) ) );
+				$order->update_status( 'failed', sprintf( __( 'Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $data['PROCESSING.RETURN'] ) ) );
 				return add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 
 			} elseif ( 'ACK' == $data['PROCESSING.RESULT'] ) {
 				$this->log( wc_clean( $data['PROCESSING.RETURN'] ) );
 				$order->payment_complete();
 				/* translators: %s: Payment Response */
-				$order->add_order_note( sprintf( __( 'Payment Completed: Payment Response is "%s" - Peach Payments.', 'woocommerce-gateway-peach-payments' ), wc_clean( $data['PROCESSING.RETURN'] ) ) );
+				$order->add_order_note( sprintf( __( 'Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $data['PROCESSING.RETURN'] ) ) );
 				return add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 			}
 		} else {
-			$order->update_status( 'failed', __( 'Payment Failed: The was an error contacting the API.', 'woocommerce-gateway-peach-payments' ) );
+			$order->update_status( 'failed', __( 'Payment Failed: The was an error contacting the API.', 'wc-gateway-peach-payments' ) );
 			return add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 		}
 	}
