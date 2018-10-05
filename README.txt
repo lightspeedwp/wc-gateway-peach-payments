@@ -8,7 +8,7 @@ Requires PHP: 7.0
 Stable tag: 1.2.0
 License: GPLv3
 
-A payment gateway integration between WooCommerce and Peach Payments.
+A payment gateway integration between WooCommerce and Peach Payments. Based on the plugin [WooCommerce Advanced Peach Payments Gateway](https://wordpress.org/plugins/woo-peach-payments-gateway/) by [Atlogys](http://atlogys.com/)
 
 == Description ==
 The [Peach Payments](https://www.lsdev.biz/product/woocommerce-peach-payments/) extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets. 
