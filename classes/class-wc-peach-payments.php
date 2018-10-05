@@ -120,7 +120,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		// Load the form fields.
 		$this->init_form_fields();
 
-		$this->order_button_text = __( 'Proceed to payment', 'woocommerce-gateway-peach-payment' );
+		$this->order_button_text = __( 'Proceed to payment', 'wc-gateway-peach-payment' );
 
 		// Load the settings.
 		$this->init_settings();
