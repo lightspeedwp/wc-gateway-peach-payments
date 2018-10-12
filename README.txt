@@ -18,8 +18,6 @@ The [Peach Payments](https://www.lsdev.biz/product/wc-peach-payments/) extension
 - 3DSecure ready
 - PCI Compliant
 
-We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/).
-
 = Requirements =
 A Peach Payments Merchant Account.
 A WooCommerce store with “South African Rand ( R )” as the currency.
@@ -30,9 +28,6 @@ Peach Payments will assist you in the application process with the respective ba
 
 = It's Free, and always will be =
 We’re firm believers in open source – that’s why we’re releasing the WC Peach Payments Gateway plugin for free, forever.
-
-= Support =
-We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/).
 
 = Actively Developed =
 The WC Peach Payments Gateway plugin is actively developed with new features and exciting enhancements all the time. Keep track on the WC Peach Payments Gateway GitHub repository. Report any bugs via github issues.
