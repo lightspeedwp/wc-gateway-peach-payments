@@ -11,7 +11,7 @@ License: GPLv3
 A payment gateway integration between WooCommerce and Peach Payments.
 
 == Description ==
-The [Peach Payments](https://www.lsdev.biz/product/wc-peach-payments/) extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets.
+The [Peach Payments](https://www.peachpayments.com/) extension for WooCommerce is a South African payment gateway that allows merchants to access various payment methods, including credit/debit cards, bank transfers, mobile wallets, electronic wallets and mobile operator billing to help them succeed in emerging markets.
 
 - Secure card storage
 - Fully supports WooCommerce Subscriptions (separate purchase)
@@ -25,7 +25,7 @@ A Peach Payments Merchant Account.
 A WooCommerce store with “South African Rand ( R )” as the currency.
 
 = Sign up with Peach Payments =
-Contact Peach Payments at sales@peachpayments.com to set up a merchant account for your company/website.
+Contact Peach Payments at [sales@peachpayments.com](mailto:sales@peachpayments.com) to set up a merchant account for your company/website.
 Peach Payments will assist you in the application process with the respective banks. Please note that the merchant account application process may take up to 4 weeks depending on the bank. Get in touch as soon as possible to avoid delays going live.
 
 = It's Free, and always will be =
