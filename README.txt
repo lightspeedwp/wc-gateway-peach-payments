@@ -2,8 +2,8 @@
 Contributors: feedmymedia
 Tags: LSX Theme, woocommerce, payments, credit card, payment request
 Donate link: https://www.lsdev.biz/
-Requires at least: 3.8
-Tested up to: 4.3.1
+Requires at least: 4.7
+Tested up to: 4.9.8
 Requires PHP: 7.0
 Stable tag: 1.2.0
 License: GPLv3
@@ -18,8 +18,6 @@ The [Peach Payments](https://www.peachpayments.com/) extension for WooCommerce i
 - 3DSecure ready
 - PCI Compliant
 
-We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/).
-
 = Requirements =
 A Peach Payments Merchant Account.
 A WooCommerce store with “South African Rand ( R )” as the currency.
@@ -30,9 +28,6 @@ Peach Payments will assist you in the application process with the respective ba
 
 = It's Free, and always will be =
 We’re firm believers in open source – that’s why we’re releasing the WC Peach Payments Gateway plugin for free, forever.
-
-= Support =
-We offer premium support for this plugin. Premium support that can be purchased via [lsdev.biz](https://www.lsdev.biz/).
 
 = Actively Developed =
 The WC Peach Payments Gateway plugin is actively developed with new features and exciting enhancements all the time. Keep track on the WC Peach Payments Gateway GitHub repository. Report any bugs via github issues.
