@@ -473,7 +473,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 		$this->log( '231 Processing Payment ' . $order_id );
 
 		try {
-			if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && is_int( $_POST['peach_payment_id'] ) ) {
+			if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['woocommerce-process-checkout-nonce'], 'woocommerce-process_checkout' ) && 'saveinfo' !== $_POST['peach_payment_id'] && 'dontsave' !== $_POST['peach_payment_id'] ) {
 
 				$payment_ids = get_user_meta( $this->get_customer_id( $order ), '_peach_payment_id', false );
 				$payment_id  = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
