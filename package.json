@@ -1,6 +1,6 @@
 {
   "name": "wc-gateway-peach-payments",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A payment gateway integration between WooCommerce and Peach Payments.",
   "main": "gulpfile.js",
   "scripts": {

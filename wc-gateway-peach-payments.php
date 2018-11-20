@@ -3,7 +3,7 @@
  * Plugin Name: WC Peach Payments Gateway
  * Plugin URI: https://github.com/lightspeeddevelopment/wc-gateway-peach-payments/
  * Description: A payment gateway integration between WooCommerce and Peach Payments.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Peach Payments
  * Author URI: https://profiles.wordpress.org/peachpayments/
  * License:     GPL3

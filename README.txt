@@ -5,7 +5,7 @@ Donate link: https://www.lsdev.biz/
 Requires at least: 4.7
 Tested up to: 4.9.8
 Requires PHP: 7.0
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3
 
 A payment gateway integration between WooCommerce and Peach Payments.
