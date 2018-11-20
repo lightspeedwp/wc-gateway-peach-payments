@@ -470,18 +470,22 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 		$order = wc_get_order( $order_id );
 
+		$this->log( '231 Processing Payment ' . $order_id );
+
 		try {
-			if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && ctype_digit( $_POST['peach_payment_id'] ) ) {
+			if ( isset( $_POST['peach_payment_id'] ) && wp_verify_nonce( $_POST['peach_payment_id'] ) && is_int( $_POST['peach_payment_id'] ) ) {
 
 				$payment_ids = get_user_meta( $this->get_customer_id( $order ), '_peach_payment_id', false );
 				$payment_id  = $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'];
 
 				//throw exception if payment method does not exist
 				if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
+					$this->log( '232 Invalid Payment Method ' . $order_id );
 					throw new Exception( __( 'Invalid Payment Method', 'wc-gateway-peach-payments' ) );
 				}
 
 				$redirect_url = $this->execute_post_payment_request( $order, $order->get_total(), $payment_id );
+				$this->log( '233 Invalid Payment Method ' . $redirect_url );
 
 				//throw exception if payment is not accepted
 				if ( is_wp_error( $redirect_url ) ) {
@@ -574,14 +578,12 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	 * @return null
 	 */
 	function receipt_page( $order_id ) {
-
 		if ( isset( $_GET['registered_payment'] ) && wp_verify_nonce( $_GET['registered_payment'] ) ) {
 			$status = $_GET['registered_payment'];
 			$this->process_registered_payment_status( $order_id, $status );
 		} else {
 			echo wp_kses_post( $this->generate_peach_payments_form( $order_id ) );
 		}
-
 	}
 
 	/**
@@ -948,6 +950,10 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			} elseif ( 'ACK' == $data['PROCESSING.RESULT'] ) {
 				$this->log( wc_clean( $data['PROCESSING.RETURN'] ) );
 				$order->payment_complete();
+				$force_complete = $this->check_orders_products( $order );
+				if ( 'yes' === $this->force_completed && $force_complete ) {
+					$order->update_status( 'completed' );
+				}
 				/* translators: %s: Payment Response */
 				$order->add_order_note( sprintf( __( 'Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $data['PROCESSING.RETURN'] ) ) );
 				return add_query_arg( 'registered_payment', 'ACK', $redirect_url );
