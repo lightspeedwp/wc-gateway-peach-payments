@@ -2,6 +2,7 @@
 
 2018.11.20 - version 1.2.1
  * Dev - Added in an option to allow Virtual or Downloadable orders to be set to complete.
+ * Fix - Fixed the Copy and Pay for Prevailing when using a stored card.
 
 2018.10.03 - version 1.2.0
  * Dev - Refactored code to WordPress Guidelines.

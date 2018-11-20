@@ -575,7 +575,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	 */
 	function receipt_page( $order_id ) {
 
-		if ( isset( $_GET['registered_payment'] ) && wp_verify_nonce( $_POST['registered_payment'] ) ) {
+		if ( isset( $_GET['registered_payment'] ) && wp_verify_nonce( $_GET['registered_payment'] ) ) {
 			$status = $_GET['registered_payment'];
 			$this->process_registered_payment_status( $order_id, $status );
 		} else {
@@ -785,6 +785,10 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			exit;
 		} elseif ( 'ACK' == $status ) {
 			$order->payment_complete();
+			$force_complete = $this->check_orders_products( $order );
+			if ( 'yes' === $this->force_completed && $force_complete ) {
+				$order->update_status( 'completed' );
+			}
 			wp_safe_redirect( $this->get_return_url( $order ) );
 			exit;
 		}
