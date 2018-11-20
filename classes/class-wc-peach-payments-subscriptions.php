@@ -128,7 +128,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							update_post_meta( $this->get_order_id( $order ), '_peach_subscription_payment_method', $payment_id );
 							$this->save_subscription_meta( $this->get_order_id( $order ), $payment_id );
 							$this->log( '128 Order ID ' . $this->get_order_id( $order ) . ' Parent ID ' . $this->get_order_id( $order ) . ' Payment ID ' . $payment_id );
-							$order->add_order_note( sprintf( e_( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
+							$order->add_order_note( sprintf( __( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						}
 					} else {
