@@ -106,6 +106,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						$redirect_url = $this->get_return_url( $order );
 
 						if ( 'NOK' == $response['PROCESSING.RESULT'] ) {
+							/* translators: %s is replaced the response from the API */
 							$order->update_status( 'failed', sprintf( esc_html__( 'Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 						} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
@@ -128,6 +129,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							update_post_meta( $this->get_order_id( $order ), '_peach_subscription_payment_method', $payment_id );
 							$this->save_subscription_meta( $this->get_order_id( $order ), $payment_id );
 							$this->log( '128 Order ID ' . $this->get_order_id( $order ) . ' Parent ID ' . $this->get_order_id( $order ) . ' Payment ID ' . $payment_id );
+							/* translators: %s is replaced the response from the API */
 							$order->add_order_note( sprintf( esc_html__( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						}
