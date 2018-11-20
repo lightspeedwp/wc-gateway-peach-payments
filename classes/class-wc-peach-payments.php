@@ -753,7 +753,8 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 		if ( false !== $order && count( $order->get_items() ) > 0 ) {
 			foreach ( $order->get_items() as $item ) {
-				if ( $_product = $this->get_item_product( $item, $order ) ) {
+				$_product = $this->get_item_product( $item, $order );
+				if ( $_product ) {
 					if ( $_product->is_downloadable() || $_product->is_virtual() ) {
 						$force_complete = true;
 					} else {

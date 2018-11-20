@@ -91,7 +91,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 
 					//throw exception if payment method does not exist
 					if ( ! isset( $payment_ids[ $_POST['peach_payment_id'] ]['payment_id'] ) ) {
-						throw new Exception( __( 'Invalid', 'wc-gateway-peach-payments' ) );
+						throw new Exception( esc_html__( 'Invalid', 'wc-gateway-peach-payments' ) );
 					}
 
 					$initial_payment = $order->get_total( $order );
@@ -106,7 +106,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						$redirect_url = $this->get_return_url( $order );
 
 						if ( 'NOK' == $response['PROCESSING.RESULT'] ) {
-							$order->update_status( 'failed', sprintf( e_( 'Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
+							$order->update_status( 'failed', sprintf( esc_html__( 'Subscription Payment Failed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 						} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
 							$order->payment_complete();
@@ -128,7 +128,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							update_post_meta( $this->get_order_id( $order ), '_peach_subscription_payment_method', $payment_id );
 							$this->save_subscription_meta( $this->get_order_id( $order ), $payment_id );
 							$this->log( '128 Order ID ' . $this->get_order_id( $order ) . ' Parent ID ' . $this->get_order_id( $order ) . ' Payment ID ' . $payment_id );
-							$order->add_order_note( sprintf( __( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
+							$order->add_order_note( sprintf( esc_html__( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
 						}
 					} else {
@@ -145,7 +145,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 					);
 
 				} elseif ( isset( $_POST['peach_payment_id'] ) && ( 'dontsave' == $_POST['peach_payment_id'] ) ) {
-					throw new Exception( __( 'You need to store your payment method in order to purchase a subscription.', 'wc-gateway-peach-payments' ) );
+					throw new Exception( esc_html__( 'You need to store your payment method in order to purchase a subscription.', 'wc-gateway-peach-payments' ) );
 				} else /*if ( isset( $_POST['peach_payment_id'] ) && ( $_POST['peach_payment_id'] == 'saveinfo' ) )*/ {
 					$subscription_request = array(
 						'IDENTIFICATION.TRANSACTIONID' => $order_id,
