@@ -347,6 +347,7 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 			$order                = wc_get_order( $order_id );
 			$current_order_status = $order->get_status();
 			//Make sure we do not re process any complete or processing orders.
+			$force_complete = false;
 
 			if ( 'complete' !== $current_order_status && 'processing' !== $current_order_status ) {
 
@@ -395,21 +396,8 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 							$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 						} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
 							$order->payment_complete();
+							$force_complete = $this->check_orders_products( $order );
 
-							$force_complete = false;
-							if ( count( $order->get_items() ) > 0 ) {
-								foreach ( $order->get_items() as $item ) {
-									if (
-										$_product = $this->get_item_product( $item, $order ) ) {
-										if ( $_product->is_downloadable() || $_product->is_virtual() ) {
-											$force_complete = true;
-										}
-									}
-								}
-							}
-							if ( $force_complete ) {
-								$order->update_status( 'completed' );
-							}
 							/* translators: %s: Subscription Payment Completed */
 							$order->add_order_note( sprintf( __( 'Subscription Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 							update_post_meta( $this->get_order_id( $order ), '_peach_subscription_payment_method', $payment_id );
@@ -426,6 +414,10 @@ class WC_Peach_Payments_Subscriptions extends WC_Peach_Payments {
 						$this->save_subscription_meta( $this->get_order_id( $order ), $payment_id );
 						$this->log( '423 Order ID ' . $this->get_order_id( $order ) . ' Parent ID ' . $this->get_order_id( $order ) . ' Payment ID ' . $payment_id );
 						$redirect_url = $this->get_return_url( $order );
+					}
+
+					if ( 'yes' === $this->force_completed && $force_complete ) {
+						$order->update_status( 'completed' );
 					}
 
 					wp_safe_redirect( $redirect_url );

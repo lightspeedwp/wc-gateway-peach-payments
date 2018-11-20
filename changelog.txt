@@ -1,5 +1,8 @@
 *** WC Peach Payments Gateway Changelog ***
 
+2018.11.20 - version 1.2.1
+ * Dev - Added in an option to allow Virtual or Downloadable orders to be set to complete.
+
 2018.10.03 - version 1.2.0
  * Dev - Refactored code to WordPress Guidelines.
 

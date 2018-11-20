@@ -80,6 +80,11 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	protected $channel_3ds = false;
 
 	/**
+	 * If the Force Completed setting is active
+	 */
+	protected $force_completed = false;
+
+	/**
 	 * If the debug is active and we need to log the info
 	 */
 	public $debug = false;
@@ -266,6 +271,13 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 					'CONNECTOR_TEST'  => 'Connector Test',
 					'LIVE'            => 'Live',
 				),
+			),
+			'force_completed' => array(
+				'title'       => __( 'Force Completed Status', 'wc-gateway-peach-payments' ),
+				'label'       => __( 'On / Off', 'wc-gateway-peach-payments' ),
+				'type'        => 'checkbox',
+				'description' => __( 'Enable this option to set an order which contains only "virtual" and/or "downloadable" products to completed instead of processing.', 'wc-gateway-peach-payments' ),
+				'default'     => 'no',
 			),
 			'debug'            => array(
 				'title'       => __( 'Debug', 'wc-gateway-peach-payments' ),
@@ -608,6 +620,7 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 		if ( false !== $order ) {
 			$current_order_status = $order->get_status();
+			$force_complete = false;
 
 			if ( 'complete' !== $current_order_status && 'processing' !== $current_order_status ) {
 
@@ -654,9 +667,29 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 						$redirect_url = add_query_arg( 'registered_payment', 'NOK', $redirect_url );
 					} elseif ( 'ACK' == $response['PROCESSING.RESULT'] ) {
 						$order->payment_complete();
+
+						$force_complete = $this->check_orders_products( $order );
+
+						if ( count( $order->get_items() ) > 0 ) {
+							foreach ( $order->get_items() as $item ) {
+								if (
+								$_product = $this->get_item_product( $item, $order ) ) {
+									if ( $_product->is_downloadable() || $_product->is_virtual() ) {
+										$force_complete = true;
+									}
+								}
+							}
+						}
+
 						/* translators: %s: Payment Completed */
 						$order->add_order_note( sprintf( __( 'Payment Completed: Payment Response is "%s" - Peach Payments.', 'wc-gateway-peach-payments' ), wc_clean( $response['PROCESSING.RETURN'] ) ) );
 						$redirect_url = add_query_arg( 'registered_payment', 'ACK', $redirect_url );
+
+						$this->log( '416 Order ID ' . $this->get_order_id( $order ) . ' Payment ID ' . $payment_id );
+					}
+
+					if ( 'yes' === $this->force_completed && true === $force_complete ) {
+						$order->update_status( 'completed' );
 					}
 					wp_safe_redirect( $redirect_url );
 					exit;
@@ -667,6 +700,14 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 					if ( 'ACK' == $parsed_response->transaction->processing->result ) {
 						$order->payment_complete();
+
+						$this->log( '417 Order ID ' . $this->get_order_id( $order ) );
+						$force_complete = $this->check_orders_products( $order );
+
+						if ( 'yes' === $this->force_completed && true === $force_complete ) {
+							$order->update_status( 'completed' );
+						}
+
 						wp_safe_redirect( $this->get_return_url( $order ) );
 						exit;
 					} elseif ( 'NOK' == $parsed_response->transaction->processing->result ) {
@@ -698,6 +739,33 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 			}
 		}
 	}
+
+	/**
+	 * Checks the order for virtual or downloadable products
+	 * @param $order \WC_Order
+	 * @return boolean
+	 */
+	public function check_orders_products( $order = false ) {
+		$force_complete = false;
+		$mixed_products = false;
+
+		if ( false !== $order && count( $order->get_items() ) > 0 ) {
+			foreach ( $order->get_items() as $item ) {
+				if ( $_product = $this->get_item_product( $item, $order ) ) {
+					if ( $_product->is_downloadable() || $_product->is_virtual() ) {
+						$force_complete = true;
+					} else {
+						$mixed_products = true;
+					}
+				}
+			}
+		}
+		if ( true === $mixed_products ) {
+			$force_complete = false;
+		}
+		return $force_complete;
+	}
+
 
 	/**
 	 * Process respnse from registered payment request on POST api
