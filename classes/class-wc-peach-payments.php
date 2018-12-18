@@ -997,15 +997,9 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 	 */
 	public function wp_kses_allowed_html( $allowedtags, $context ) {
 		if ( ! isset( $allowedtags['form'] ) ) {
-			$allowedtags['form'] = array(
-				'action' => true,
-				'accept' => true,
-				'accept-charset' => true,
-				'enctype' => true,
-				'method' => true,
-				'name' => true,
-				'target' => true,
-			);
+			$allowedtags['form']['id'] = 1;
+			$allowedtags['form']['action'] = 1;
 		}
+		return $allowedtags;
 	}
 }
