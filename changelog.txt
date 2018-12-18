@@ -1,5 +1,8 @@
 *** WC Peach Payments Gateway Changelog ***
 
+2018.12.18 - version 1.2.2
+ * Dev - Allowed the "<form>" tag in wp_kses_allowed_html. A WordPress > 5.0 update.
+
 2018.11.20 - version 1.2.1
  * Dev - Added in an option to allow Virtual or Downloadable orders to be set to complete.
  * Fix - Fixed the Copy and Pay for Prevailing when using a stored card.

@@ -171,6 +171,12 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 
 		//Scripts
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+
+		//Allow the form tag
+		add_filter( 'wp_kses_allowed_html', array(
+			$this,
+			'wp_kses_allowed_html',
+		), 10, 2 );
 	}
 
 	/**
@@ -984,6 +990,22 @@ class WC_Peach_Payments extends WC_Payment_Gateway {
 				'exp_year'    => $response->transaction->account->expiry->year,
 				'exp_month'   => $response->transaction->account->expiry->month,
 			) );
+	}
 
+	/**
+	 * Allow the form tag in wp_kses_post()
+	 */
+	public function wp_kses_allowed_html( $allowedtags, $context ) {
+		if ( ! isset( $allowedtags['form'] ) ) {
+			$allowedtags['form'] = array(
+				'action' => true,
+				'accept' => true,
+				'accept-charset' => true,
+				'enctype' => true,
+				'method' => true,
+				'name' => true,
+				'target' => true,
+			);
+		}
 	}
 }
